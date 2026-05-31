@@ -113,3 +113,37 @@ export type {
   CircularProgressProps,
   SkeletonProps,
 } from '@mui/material';
+
+// Group 4 — Data display & Surfaces
+export {
+  Chip,
+  Avatar,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemText,
+  ListItemIcon,
+  Divider,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+} from '@mui/material';
+
+export type {
+  ChipProps,
+  AvatarProps,
+  ListProps,
+  ListItemProps,
+  DividerProps,
+  AccordionProps,
+  PaperProps,
+  TableProps,
+  TableCellProps,
+} from '@mui/material';

@@ -490,6 +490,86 @@ export function createNeoBrutalistTheme(options: ThemeOptions = {}): Theme {
             circular: { borderRadius: 0 },
           },
         },
+
+        // --- Group 4: Data display & Surfaces ---
+        MuiChip: {
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              fontWeight: font.weight.bold,
+              backgroundColor: color.background.paper,
+              '&.Mui-focusVisible': focusRing,
+            },
+            filled: { backgroundColor: color.brand.yellow, color: color.text.onAccent },
+            outlined: { backgroundColor: color.background.paper },
+            deleteIcon: { color: color.ink },
+          },
+        },
+        MuiAvatar: {
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              backgroundColor: color.brand.purple,
+              color: color.text.onAccent,
+              fontWeight: font.weight.bold,
+            },
+          },
+        },
+        MuiListItemButton: {
+          styleOverrides: {
+            root: {
+              borderRadius: 0,
+              '&:hover': { backgroundColor: color.background.default },
+              '&.Mui-selected': {
+                backgroundColor: color.brand.yellow,
+                color: color.text.onAccent,
+                '&:hover': { backgroundColor: color.brand.yellow },
+              },
+              '&.Mui-focusVisible': focusRing,
+            },
+          },
+        },
+        MuiAccordion: {
+          defaultProps: { disableGutters: true, elevation: 0 },
+          styleOverrides: {
+            root: {
+              borderRadius: 0,
+              border: `${border.width.regular} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+              '&:not(:last-of-type)': { borderBottom: 0 },
+              '&::before': { display: 'none' },
+            },
+          },
+        },
+        MuiAccordionSummary: {
+          styleOverrides: {
+            root: { fontWeight: font.weight.bold },
+            content: { fontWeight: font.weight.bold },
+          },
+        },
+        MuiDivider: {
+          styleOverrides: {
+            root: {
+              borderColor: color.border,
+              borderBottomWidth: border.width.regular,
+            },
+          },
+        },
+        MuiTableCell: {
+          styleOverrides: {
+            root: { borderBottom: `${border.width.thin} solid ${color.border}` },
+            head: {
+              fontFamily: font.family.mono,
+              fontWeight: font.weight.bold,
+              textTransform: 'uppercase',
+              letterSpacing: font.letterSpacing.wide,
+              borderBottom: `${border.width.thick} solid ${color.border}`,
+              backgroundColor: color.background.default,
+            },
+          },
+        },
       },
     },
     options,
