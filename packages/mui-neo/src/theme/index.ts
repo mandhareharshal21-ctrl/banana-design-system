@@ -408,6 +408,88 @@ export function createNeoBrutalistTheme(options: ThemeOptions = {}): Theme {
             li: { fontWeight: font.weight.bold },
           },
         },
+
+        // --- Group 3: Feedback & Overlays ---
+        MuiAlert: {
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+              fontWeight: font.weight.bold,
+              color: color.text.primary,
+            },
+            standardSuccess: { backgroundColor: color.feedback.success },
+            standardError: { backgroundColor: color.feedback.error, color: color.white },
+            standardWarning: { backgroundColor: color.feedback.warning },
+            standardInfo: { backgroundColor: color.feedback.info },
+            filledSuccess: { backgroundColor: color.feedback.success, color: color.text.onAccent },
+            filledError: { backgroundColor: color.feedback.error, color: color.white },
+            filledWarning: { backgroundColor: color.feedback.warning, color: color.text.onAccent },
+            filledInfo: { backgroundColor: color.feedback.info, color: color.text.onAccent },
+          },
+        },
+        MuiDialog: {
+          styleOverrides: {
+            paper: {
+              borderRadius: px(radius.none),
+              border: `${border.width.thick} solid ${color.border}`,
+              boxShadow: shadow.hard.lg,
+            },
+          },
+        },
+        MuiTooltip: {
+          styleOverrides: {
+            tooltip: {
+              borderRadius: px(radius.none),
+              border: `${border.width.thin} solid ${color.border}`,
+              backgroundColor: color.ink,
+              color: color.white,
+              fontFamily: font.family.mono,
+              fontWeight: font.weight.bold,
+              fontSize: font.size.xs,
+            },
+            arrow: { color: color.ink },
+          },
+        },
+        MuiSnackbarContent: {
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+              backgroundColor: color.ink,
+              color: color.white,
+              fontWeight: font.weight.bold,
+            },
+          },
+        },
+        MuiLinearProgress: {
+          styleOverrides: {
+            root: {
+              height: 16,
+              borderRadius: 0,
+              border: `${border.width.regular} solid ${color.border}`,
+              backgroundColor: color.white,
+            },
+            bar: { backgroundColor: color.brand.yellow },
+          },
+        },
+        MuiCircularProgress: {
+          styleOverrides: { root: { color: color.ink } },
+        },
+        MuiSkeleton: {
+          defaultProps: { variant: 'rectangular', animation: 'wave' },
+          styleOverrides: {
+            root: {
+              borderRadius: 0,
+              backgroundColor: '#E6E6E6',
+              border: `${border.width.thin} solid ${color.border}`,
+            },
+            rounded: { borderRadius: 0 },
+            circular: { borderRadius: 0 },
+          },
+        },
       },
     },
     options,

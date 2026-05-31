@@ -86,3 +86,30 @@ export type {
   TabProps,
   BreadcrumbsProps,
 } from '@mui/material';
+
+// Group 3 — Feedback & Overlays
+export {
+  Alert,
+  AlertTitle,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions,
+  Tooltip,
+  Snackbar,
+  SnackbarContent,
+  LinearProgress,
+  CircularProgress,
+  Skeleton,
+} from '@mui/material';
+
+export type {
+  AlertProps,
+  DialogProps,
+  TooltipProps,
+  SnackbarProps,
+  LinearProgressProps,
+  CircularProgressProps,
+  SkeletonProps,
+} from '@mui/material';
