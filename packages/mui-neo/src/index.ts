@@ -34,3 +34,34 @@ export type {
   TypographyProps,
   ContainerProps,
 } from '@mui/material';
+
+// Group 1 — Form & Input controls
+export {
+  Radio,
+  RadioGroup,
+  Select,
+  MenuItem,
+  Menu,
+  Slider,
+  ToggleButton,
+  ToggleButtonGroup,
+  FormControl,
+  FormLabel,
+  InputLabel,
+  FormHelperText,
+} from '@mui/material';
+
+export type {
+  RadioProps,
+  RadioGroupProps,
+  SelectProps,
+  MenuItemProps,
+  MenuProps,
+  SliderProps,
+  ToggleButtonProps,
+  ToggleButtonGroupProps,
+  FormControlProps,
+  FormLabelProps,
+  InputLabelProps,
+  FormHelperTextProps,
+} from '@mui/material';
