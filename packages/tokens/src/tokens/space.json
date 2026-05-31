@@ -1,0 +1,23 @@
+{
+  "space": {
+    "0": { "$type": "dimension", "$value": "0px" },
+    "1": { "$type": "dimension", "$value": "4px" },
+    "2": { "$type": "dimension", "$value": "8px" },
+    "3": { "$type": "dimension", "$value": "12px" },
+    "4": { "$type": "dimension", "$value": "16px" },
+    "5": { "$type": "dimension", "$value": "24px" },
+    "6": { "$type": "dimension", "$value": "32px" },
+    "7": { "$type": "dimension", "$value": "48px" },
+    "8": { "$type": "dimension", "$value": "64px" }
+  },
+  "motion": {
+    "duration": {
+      "fast": { "$type": "duration", "$value": "80ms" },
+      "base": { "$type": "duration", "$value": "120ms" }
+    },
+    "easing": {
+      "snap": { "$type": "cubicBezier", "$value": "cubic-bezier(0.2, 0, 0, 1)" }
+    },
+    "pressOffset": { "$type": "dimension", "$value": "4px" }
+  }
+}

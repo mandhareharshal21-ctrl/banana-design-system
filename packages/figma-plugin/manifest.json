@@ -1,0 +1,13 @@
+{
+  "name": "Banana Design System Sync",
+  "id": "banana-design-system-sync",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "editorType": ["figma"],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": ["https://api.github.com", "https://raw.githubusercontent.com"],
+    "reasoning": "Pulls token/component specs from the GitHub repo and pushes Figma state back."
+  }
+}

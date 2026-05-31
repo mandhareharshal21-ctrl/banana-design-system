@@ -1,0 +1,31 @@
+{
+  "color": {
+    "ink": { "$type": "color", "$value": "#000000" },
+    "paper": { "$type": "color", "$value": "#FFFDF5" },
+    "white": { "$type": "color", "$value": "#FFFFFF" },
+    "brand": {
+      "yellow": { "$type": "color", "$value": "#FFD23F" },
+      "pink": { "$type": "color", "$value": "#FF5CA2" },
+      "cyan": { "$type": "color", "$value": "#3FC1FF" },
+      "lime": { "$type": "color", "$value": "#9EFF3F" },
+      "purple": { "$type": "color", "$value": "#A77BFF" }
+    },
+    "feedback": {
+      "error": { "$type": "color", "$value": "#FF3B30" },
+      "success": { "$type": "color", "$value": "#16C172" },
+      "warning": { "$type": "color", "$value": "#FFB300" },
+      "info": { "$type": "color", "$value": "#3FC1FF" }
+    },
+    "text": {
+      "primary": { "$type": "color", "$value": "{color.ink}" },
+      "secondary": { "$type": "color", "$value": "#3A3A3A" },
+      "disabled": { "$type": "color", "$value": "#9A9A9A" },
+      "onAccent": { "$type": "color", "$value": "{color.ink}" }
+    },
+    "background": {
+      "default": { "$type": "color", "$value": "{color.paper}" },
+      "paper": { "$type": "color", "$value": "{color.white}" }
+    },
+    "border": { "$type": "color", "$value": "{color.ink}" }
+  }
+}

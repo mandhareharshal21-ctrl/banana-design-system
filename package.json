@@ -1,0 +1,37 @@
+{
+  "name": "banana-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Neo-Brutalist design system layered on Material UI, with a code-first to Figma round-trip workflow.",
+  "license": "MIT",
+  "packageManager": "pnpm@11.0.8",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "pnpm -r --filter \"./packages/*\" build",
+    "test": "pnpm -r test",
+    "typecheck": "pnpm -r typecheck",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "storybook": "pnpm --filter @banana/docs storybook",
+    "build-storybook": "pnpm --filter @banana/docs build-storybook",
+    "tokens:build": "pnpm --filter @banana/tokens build",
+    "changeset": "changeset",
+    "version": "changeset version",
+    "release": "pnpm build && changeset publish"
+  },
+  "devDependencies": {
+    "@changesets/cli": "^2.27.10",
+    "@eslint/js": "^9.17.0",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-react": "^7.37.3",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "globals": "^15.14.0",
+    "prettier": "^3.4.2",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.2"
+  }
+}

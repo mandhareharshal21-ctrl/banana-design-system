@@ -1,0 +1,14 @@
+node_modules/
+dist/
+build/
+coverage/
+storybook-static/
+*.log
+.DS_Store
+.env
+.env.*
+!.env.example
+*.tsbuildinfo
+.turbo/
+.vite/
+packages/tokens/src/generated.ts

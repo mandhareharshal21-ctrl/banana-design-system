@@ -1,0 +1,19 @@
+{
+  "name": "@banana/figma-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "generate": "node scripts/generate-variables-spec.mjs",
+    "build": "node scripts/generate-variables-spec.mjs && node build.mjs",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@banana/tokens": "workspace:*"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.109.0",
+    "esbuild": "^0.27.0",
+    "typescript": "^5.7.2"
+  }
+}

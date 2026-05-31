@@ -1,0 +1,14 @@
+{
+  "border": {
+    "width": {
+      "thin": { "$type": "dimension", "$value": "2px" },
+      "regular": { "$type": "dimension", "$value": "3px" },
+      "thick": { "$type": "dimension", "$value": "4px" }
+    }
+  },
+  "radius": {
+    "none": { "$type": "dimension", "$value": "0px" },
+    "sm": { "$type": "dimension", "$value": "4px" },
+    "md": { "$type": "dimension", "$value": "8px" }
+  }
+}

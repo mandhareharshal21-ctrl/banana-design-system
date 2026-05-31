@@ -1,0 +1,16 @@
+{
+  "name": "Button/Primary",
+  "cornerRadius": 0,
+  "padding": [12, 18, 12, 18],
+  "fillVar": "color/brand/yellow",
+  "fill": "#FFD23F",
+  "strokeVar": "color/border",
+  "stroke": "#000000",
+  "strokeWeight": 3,
+  "shadow": { "x": 4, "y": 4, "color": "#000000" },
+  "text": "Button",
+  "textColorVar": "color/text/onAccent",
+  "textColor": "#000000",
+  "fontSize": 16,
+  "fontWeight": 700
+}

@@ -1,0 +1,31 @@
+{
+  "font": {
+    "family": {
+      "display": {
+        "$type": "fontFamily",
+        "$value": "'Space Grotesk', 'Arial Black', system-ui, sans-serif"
+      },
+      "body": { "$type": "fontFamily", "$value": "'Space Grotesk', system-ui, sans-serif" },
+      "mono": { "$type": "fontFamily", "$value": "'Space Mono', ui-monospace, monospace" }
+    },
+    "weight": {
+      "regular": { "$type": "fontWeight", "$value": 500 },
+      "bold": { "$type": "fontWeight", "$value": 700 },
+      "black": { "$type": "fontWeight", "$value": 900 }
+    },
+    "size": {
+      "xs": { "$type": "dimension", "$value": "12px" },
+      "sm": { "$type": "dimension", "$value": "14px" },
+      "md": { "$type": "dimension", "$value": "16px" },
+      "lg": { "$type": "dimension", "$value": "20px" },
+      "xl": { "$type": "dimension", "$value": "28px" },
+      "2xl": { "$type": "dimension", "$value": "40px" },
+      "3xl": { "$type": "dimension", "$value": "56px" }
+    },
+    "letterSpacing": {
+      "tight": { "$type": "dimension", "$value": "-0.02em" },
+      "normal": { "$type": "dimension", "$value": "0em" },
+      "wide": { "$type": "dimension", "$value": "0.04em" }
+    }
+  }
+}
