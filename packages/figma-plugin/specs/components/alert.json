@@ -1,0 +1,253 @@
+{
+  "name": "Alert",
+  "properties": [
+    {
+      "name": "Title",
+      "type": "TEXT",
+      "default": "Heads up"
+    },
+    {
+      "name": "Message",
+      "type": "TEXT",
+      "default": "This is an alert."
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "Severity": "Info"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "padding": [
+          12,
+          14,
+          12,
+          14
+        ],
+        "itemSpacing": 2,
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/feedback/info",
+          "hex": "#3FC1FF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "width": 320,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Heads up",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Title"
+          },
+          {
+            "text": "This is an alert.",
+            "fontStyle": "Regular",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Message"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "Severity": "Success"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "padding": [
+          12,
+          14,
+          12,
+          14
+        ],
+        "itemSpacing": 2,
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/feedback/success",
+          "hex": "#16C172"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "width": 320,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Heads up",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Title"
+          },
+          {
+            "text": "This is an alert.",
+            "fontStyle": "Regular",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Message"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "Severity": "Warning"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "padding": [
+          12,
+          14,
+          12,
+          14
+        ],
+        "itemSpacing": 2,
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/feedback/warning",
+          "hex": "#FFB300"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "width": 320,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Heads up",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Title"
+          },
+          {
+            "text": "This is an alert.",
+            "fontStyle": "Regular",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Message"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "Severity": "Error"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "padding": [
+          12,
+          14,
+          12,
+          14
+        ],
+        "itemSpacing": 2,
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/feedback/error",
+          "hex": "#FF3B30"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "width": 320,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Heads up",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Title"
+          },
+          {
+            "text": "This is an alert.",
+            "fontStyle": "Regular",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Message"
+          }
+        ]
+      }
+    }
+  ]
+}

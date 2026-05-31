@@ -1,0 +1,76 @@
+{
+  "name": "Card",
+  "properties": [
+    {
+      "name": "Title",
+      "type": "TEXT",
+      "default": "Card title"
+    },
+    {
+      "name": "Body",
+      "type": "TEXT",
+      "default": "Card body text goes here."
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "padding": [
+          16,
+          16,
+          16,
+          16
+        ],
+        "itemSpacing": 8,
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/background/paper",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 6,
+          "y": 6,
+          "color": "#000000"
+        },
+        "width": 280,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Card title",
+            "fontStyle": "Bold",
+            "fontSize": 20,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Title"
+          },
+          {
+            "text": "Card body text goes here.",
+            "fontStyle": "Regular",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/secondary",
+              "hex": "#3A3A3A"
+            },
+            "bindText": "Body"
+          }
+        ]
+      }
+    }
+  ]
+}

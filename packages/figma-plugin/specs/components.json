@@ -1,0 +1,82 @@
+[
+  {
+    "file": "components/button.json",
+    "name": "Button"
+  },
+  {
+    "file": "components/icon-button.json",
+    "name": "IconButton"
+  },
+  {
+    "file": "components/fab.json",
+    "name": "Fab"
+  },
+  {
+    "file": "components/toggle-button.json",
+    "name": "ToggleButton"
+  },
+  {
+    "file": "components/chip.json",
+    "name": "Chip"
+  },
+  {
+    "file": "components/badge.json",
+    "name": "Badge"
+  },
+  {
+    "file": "components/avatar.json",
+    "name": "Avatar"
+  },
+  {
+    "file": "components/checkbox.json",
+    "name": "Checkbox"
+  },
+  {
+    "file": "components/radio.json",
+    "name": "Radio"
+  },
+  {
+    "file": "components/switch.json",
+    "name": "Switch"
+  },
+  {
+    "file": "components/text-field.json",
+    "name": "TextField"
+  },
+  {
+    "file": "components/alert.json",
+    "name": "Alert"
+  },
+  {
+    "file": "components/tooltip.json",
+    "name": "Tooltip"
+  },
+  {
+    "file": "components/tab.json",
+    "name": "Tab"
+  },
+  {
+    "file": "components/link.json",
+    "name": "Link"
+  },
+  {
+    "file": "components/divider.json",
+    "name": "Divider"
+  },
+  {
+    "file": "components/slider.json",
+    "name": "Slider"
+  },
+  {
+    "file": "components/linear-progress.json",
+    "name": "LinearProgress"
+  },
+  {
+    "file": "components/card.json",
+    "name": "Card"
+  },
+  {
+    "file": "components/accordion.json",
+    "name": "Accordion"
+  }
+]

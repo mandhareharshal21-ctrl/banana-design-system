@@ -1,0 +1,78 @@
+{
+  "name": "Link",
+  "properties": [
+    {
+      "name": "Label",
+      "type": "TEXT",
+      "default": "Link"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Link",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "letterSpacing": 0.3,
+            "textColor": {
+              "var": "color/brand/pink",
+              "hex": "#FF5CA2"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Hover"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          2,
+          2,
+          2,
+          2
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Link",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "letterSpacing": 0.3,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    }
+  ]
+}

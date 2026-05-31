@@ -1,0 +1,53 @@
+{
+  "name": "Tooltip",
+  "properties": [
+    {
+      "name": "Label",
+      "type": "TEXT",
+      "default": "Tooltip"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          6,
+          10,
+          6,
+          10
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/ink",
+          "hex": "#000000"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 2,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Tooltip",
+            "fontStyle": "Regular",
+            "fontSize": 12,
+            "mono": true,
+            "textColor": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    }
+  ]
+}

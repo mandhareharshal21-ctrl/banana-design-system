@@ -1,0 +1,94 @@
+{
+  "name": "Checkbox",
+  "variants": [
+    {
+      "props": {
+        "State": "Unchecked"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 24,
+        "height": 24,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 1,
+        "children": []
+      }
+    },
+    {
+      "props": {
+        "State": "Checked"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 24,
+        "height": 24,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "X",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/ink",
+              "hex": "#000000"
+            }
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 24,
+        "height": 24,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 0.5,
+        "children": []
+      }
+    }
+  ]
+}

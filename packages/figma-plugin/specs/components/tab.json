@@ -1,0 +1,138 @@
+{
+  "name": "Tab",
+  "properties": [
+    {
+      "name": "Label",
+      "type": "TEXT",
+      "default": "Tab"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          10,
+          16,
+          10,
+          16
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Tab",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Selected"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          10,
+          16,
+          10,
+          16
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Tab",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/onAccent",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          10,
+          16,
+          10,
+          16
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 0.5,
+        "children": [
+          {
+            "text": "Tab",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/disabled",
+              "hex": "#9A9A9A"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    }
+  ]
+}

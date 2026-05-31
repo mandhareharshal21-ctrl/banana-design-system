@@ -1,0 +1,208 @@
+{
+  "name": "Chip",
+  "properties": [
+    {
+      "name": "Label",
+      "type": "TEXT",
+      "default": "Chip"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "Variant": "Filled",
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          6,
+          12,
+          6,
+          12
+        ],
+        "itemSpacing": 6,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 2,
+        "shadow": {
+          "x": 2,
+          "y": 2,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Chip",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "Variant": "Filled",
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          6,
+          12,
+          6,
+          12
+        ],
+        "itemSpacing": 6,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 2,
+        "shadow": {
+          "x": 2,
+          "y": 2,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 0.5,
+        "children": [
+          {
+            "text": "Chip",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "Variant": "Outlined",
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          6,
+          12,
+          6,
+          12
+        ],
+        "itemSpacing": 6,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 2,
+        "shadow": {
+          "x": 2,
+          "y": 2,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Chip",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "Variant": "Outlined",
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          6,
+          12,
+          6,
+          12
+        ],
+        "itemSpacing": 6,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 2,
+        "shadow": {
+          "x": 2,
+          "y": 2,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 0.5,
+        "children": [
+          {
+            "text": "Chip",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    }
+  ]
+}

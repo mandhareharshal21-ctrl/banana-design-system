@@ -1,0 +1,25 @@
+{
+  "name": "Divider",
+  "variants": [
+    {
+      "props": {
+        "Orientation": "Horizontal"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "width": 240,
+        "height": 3,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "children": []
+      }
+    }
+  ]
+}

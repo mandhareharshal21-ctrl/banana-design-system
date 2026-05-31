@@ -1,0 +1,164 @@
+{
+  "name": "Switch",
+  "variants": [
+    {
+      "props": {
+        "State": "Off"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 52,
+        "height": 30,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 1,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 0,
+            "width": 20,
+            "height": 20,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "On"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "primaryAxisAlign": "MAX",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/lime",
+          "hex": "#9EFF3F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 52,
+        "height": 30,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 1,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 0,
+            "width": 20,
+            "height": 20,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          3,
+          3,
+          3,
+          3
+        ],
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 52,
+        "height": 30,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 0.5,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 0,
+            "width": 20,
+            "height": 20,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    }
+  ]
+}

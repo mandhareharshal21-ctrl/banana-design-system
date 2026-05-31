@@ -4,8 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "generate": "node scripts/generate-variables-spec.mjs",
-    "build": "node scripts/generate-variables-spec.mjs && node build.mjs",
+    "generate": "node scripts/generate-variables-spec.mjs && node scripts/generate-component-specs.mjs",
+    "build": "node scripts/generate-variables-spec.mjs && node scripts/generate-component-specs.mjs && node build.mjs",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

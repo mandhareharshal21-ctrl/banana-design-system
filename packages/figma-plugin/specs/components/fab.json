@@ -1,0 +1,225 @@
+{
+  "name": "Fab",
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          14,
+          14,
+          14,
+          14
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 2,
+            "width": 24,
+            "height": 24,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Hover"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          14,
+          14,
+          14,
+          14
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 6,
+          "y": 6,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 2,
+            "width": 24,
+            "height": 24,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Active"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          14,
+          14,
+          14,
+          14
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": null,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 2,
+            "width": 24,
+            "height": 24,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          14,
+          14,
+          14,
+          14
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "opacity": 0.5,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 2,
+            "width": 24,
+            "height": 24,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    }
+  ]
+}

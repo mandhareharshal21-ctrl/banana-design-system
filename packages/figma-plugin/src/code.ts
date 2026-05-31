@@ -1,24 +1,29 @@
 /// <reference types="@figma/plugin-typings" />
-import type { VariablesSpec, ComponentSpec, UiToCode } from './types';
+import type {
+  VariablesSpec,
+  ComponentSetSpec,
+  NodeSpec,
+  PaintRef,
+  TextStyleSpec,
+  PluginConfig,
+  UiToCode,
+} from './types';
 
-figma.showUI(__html__, { width: 380, height: 540 });
+figma.showUI(__html__, { width: 400, height: 620 });
 
-// Variable lookup populated by Pull, used when binding component paints.
+// Variable lookup, keyed by variable name (e.g. "color/brand/yellow").
 const varByName = new Map<string, Variable>();
 
 function log(message: string) {
   figma.ui.postMessage({ type: 'log', message });
 }
-
 function result(action: 'pull' | 'build', ok: boolean, message: string) {
   figma.ui.postMessage({ type: 'result', action, ok, message });
 }
 
 function hexToRgba(hex: string) {
   const h = hex.replace('#', '');
-  const full = h.length === 3
-    ? h.split('').map((c) => c + c).join('')
-    : h;
+  const full = h.length === 3 ? h.split('').map((ch) => ch + ch).join('') : h;
   return {
     r: parseInt(full.slice(0, 2), 16) / 255,
     g: parseInt(full.slice(2, 4), 16) / 255,
@@ -26,15 +31,57 @@ function hexToRgba(hex: string) {
     a: full.length >= 8 ? parseInt(full.slice(6, 8), 16) / 255 : 1,
   };
 }
-
 function rgb(hex: string) {
   const { r, g, b } = hexToRgba(hex);
   return { r, g, b };
 }
 
+// ---- config persistence (figma.clientStorage) ----------------------------
+const CONFIG_KEY = 'banana.config';
+async function getConfig(): Promise<PluginConfig> {
+  const stored = (await figma.clientStorage.getAsync(CONFIG_KEY)) as PluginConfig | undefined;
+  return {
+    owner: stored?.owner ?? 'mandhareharshal21-ctrl',
+    repo: stored?.repo ?? 'banana-design-system',
+    branch: stored?.branch ?? 'main',
+    token: stored?.token ?? '',
+  };
+}
+async function saveConfig(config: PluginConfig) {
+  await figma.clientStorage.setAsync(CONFIG_KEY, config);
+}
+
+// ---- fonts ---------------------------------------------------------------
+// Prefer the DS fonts; fall back to Inter when they are not installed.
+const fontCache = new Map<string, FontName>();
+async function resolveFont(family: string, style: string): Promise<FontName> {
+  const key = `${family}|${style}`;
+  const cached = fontCache.get(key);
+  if (cached) return cached;
+  const attempts: FontName[] = [
+    { family, style },
+    { family: 'Inter', style },
+    { family: 'Inter', style: 'Regular' },
+  ];
+  for (const font of attempts) {
+    try {
+      await figma.loadFontAsync(font);
+      fontCache.set(key, font);
+      return font;
+    } catch {
+      /* try next */
+    }
+  }
+  const fallback: FontName = { family: 'Roboto', style: 'Regular' };
+  await figma.loadFontAsync(fallback);
+  fontCache.set(key, fallback);
+  return fallback;
+}
+
+// ---- variables -----------------------------------------------------------
 async function pullVariables(spec: VariablesSpec) {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
-  let collection = collections.find((c) => c.name === spec.collection);
+  let collection = collections.find((cl) => cl.name === spec.collection);
   if (!collection) collection = figma.variables.createVariableCollection(spec.collection);
 
   const modeIdByName = new Map<string, string>();
@@ -66,17 +113,39 @@ async function pullVariables(spec: VariablesSpec) {
     }
     varByName.set(v.name, variable);
   }
-  const message = `Pulled ${spec.variables.length} variables (${created} new) into "${spec.collection}".`;
-  log(message);
-  result('pull', true, message);
+  return { count: spec.variables.length, created };
 }
 
+// ---- text styles ---------------------------------------------------------
+async function createTextStyles(styles: TextStyleSpec[]) {
+  const existing = await figma.getLocalTextStylesAsync();
+  let created = 0;
+  for (const s of styles) {
+    let style = existing.find((e) => e.name === s.name);
+    if (!style) {
+      style = figma.createTextStyle();
+      style.name = s.name;
+      created += 1;
+    }
+    const font = await resolveFont(s.fontFamily, s.fontStyle);
+    style.fontName = font;
+    style.fontSize = s.fontSize;
+    if (s.letterSpacing != null) style.letterSpacing = { value: s.letterSpacing, unit: 'PIXELS' };
+  }
+  return { count: styles.length, created };
+}
+
+// ---- component rendering -------------------------------------------------
 let boundPaintCount = 0;
 let plainPaintCount = 0;
-
-function boundOrPlain(hex: string, varName: string | undefined): SolidPaint {
-  const paint: SolidPaint = { type: 'SOLID', color: rgb(hex) };
-  const variable = varName ? varByName.get(varName) : undefined;
+async function hydrateVarMap() {
+  const locals = await figma.variables.getLocalVariablesAsync();
+  for (const v of locals) varByName.set(v.name, v);
+}
+function paintOf(ref: PaintRef | undefined): SolidPaint | null {
+  if (!ref) return null;
+  const paint: SolidPaint = { type: 'SOLID', color: rgb(ref.hex ?? '#000000') };
+  const variable = ref.var ? varByName.get(ref.var) : undefined;
   if (variable) {
     boundPaintCount += 1;
     return figma.variables.setBoundVariableForPaint(paint, 'color', variable);
@@ -85,116 +154,193 @@ function boundOrPlain(hex: string, varName: string | undefined): SolidPaint {
   return paint;
 }
 
-// Populate varByName from the file's existing local variables so Build binds
-// correctly even when run without Pull in the same session.
-async function hydrateVarMap() {
-  const locals = await figma.variables.getLocalVariablesAsync();
-  for (const v of locals) varByName.set(v.name, v);
+interface TextBinding {
+  prop: string;
+  node: TextNode;
 }
 
-async function loadBuildFont(): Promise<FontName> {
-  try {
-    const font: FontName = { family: 'Space Grotesk', style: 'Bold' };
-    await figma.loadFontAsync(font);
-    return font;
-  } catch {
-    const fallback: FontName = { family: 'Inter', style: 'Bold' };
-    await figma.loadFontAsync(fallback);
-    return fallback;
+// Apply frame-level properties to a container (a component root or a child frame).
+function applyFrame(node: NodeSpec, target: FrameNode | ComponentNode) {
+  target.layoutMode = node.layout ?? 'HORIZONTAL';
+  target.primaryAxisAlignItems = node.primaryAxisAlign ?? 'CENTER';
+  target.counterAxisAlignItems = (node.counterAxisAlign ?? 'CENTER') as 'MIN' | 'CENTER' | 'MAX';
+  const [pt, pr, pb, pl] = node.padding ?? [0, 0, 0, 0];
+  target.paddingTop = pt;
+  target.paddingRight = pr;
+  target.paddingBottom = pb;
+  target.paddingLeft = pl;
+  if (node.itemSpacing != null) target.itemSpacing = node.itemSpacing;
+  target.cornerRadius = node.cornerRadius ?? 0;
+  target.primaryAxisSizingMode = node.fixedWidth ? 'FIXED' : 'AUTO';
+  target.counterAxisSizingMode = node.fixedHeight ? 'FIXED' : 'AUTO';
+
+  const fill = paintOf(node.fill);
+  target.fills = fill ? [fill] : [];
+  const stroke = paintOf(node.stroke);
+  target.strokes = stroke ? [stroke] : [];
+  if (node.strokeWeight != null) target.strokeWeight = node.strokeWeight;
+  if (node.shadow) {
+    target.effects = [
+      {
+        type: 'DROP_SHADOW',
+        color: hexToRgba(node.shadow.color),
+        offset: { x: node.shadow.x, y: node.shadow.y },
+        radius: 0,
+        spread: 0,
+        visible: true,
+        blendMode: 'NORMAL',
+      },
+    ];
+  }
+  if (node.opacity != null) target.opacity = node.opacity;
+}
+
+async function renderChildren(node: NodeSpec, parent: FrameNode | ComponentNode, bindings: TextBinding[]) {
+  for (const child of node.children ?? []) {
+    const built = await renderNode(child, bindings);
+    parent.appendChild(built);
+  }
+  // Fixed dimensions must be resized after children + sizing modes are set.
+  if (node.fixedWidth || node.fixedHeight) {
+    parent.resize(node.width ?? parent.width, node.height ?? parent.height);
   }
 }
 
-async function buildComponents(specs: ComponentSpec[]) {
+async function renderNode(node: NodeSpec, bindings: TextBinding[]): Promise<SceneNode> {
+  if (node.text != null) {
+    const text = figma.createText();
+    text.fontName = await resolveFont(node.mono ? 'Space Mono' : 'Space Grotesk', node.fontStyle ?? 'Bold');
+    text.characters = node.text;
+    text.fontSize = node.fontSize ?? 16;
+    if (node.letterSpacing != null) text.letterSpacing = { value: node.letterSpacing, unit: 'PIXELS' };
+    const fill = paintOf(node.textColor);
+    if (fill) text.fills = [fill];
+    if (node.name) text.name = node.name;
+    if (node.bindText) bindings.push({ prop: node.bindText, node: text });
+    return text;
+  }
+  const frame = figma.createFrame();
+  if (node.name) frame.name = node.name;
+  applyFrame(node, frame);
+  await renderChildren(node, frame, bindings);
+  return frame;
+}
+
+function variantName(props: Record<string, string>): string {
+  return Object.entries(props)
+    .map(([k, v]) => `${k}=${v}`)
+    .join(', ');
+}
+
+async function buildComponent(spec: ComponentSetSpec) {
   await hydrateVarMap();
-  const buildFont = await loadBuildFont();
   boundPaintCount = 0;
   plainPaintCount = 0;
-  let cursorX = 0;
-  for (const s of specs) {
+
+  const components: ComponentNode[] = [];
+  const bindingsByProp = new Map<string, TextNode[]>();
+
+  for (const variant of spec.variants) {
     const comp = figma.createComponent();
-    comp.name = s.name;
-    comp.layoutMode = 'HORIZONTAL';
-    comp.primaryAxisAlignItems = 'CENTER';
-    comp.counterAxisAlignItems = 'CENTER';
-    comp.primaryAxisSizingMode = 'AUTO';
-    comp.counterAxisSizingMode = 'AUTO';
-    const [pt, pr, pb, pl] = s.padding ?? [12, 18, 12, 18];
-    comp.paddingTop = pt;
-    comp.paddingRight = pr;
-    comp.paddingBottom = pb;
-    comp.paddingLeft = pl;
-    comp.cornerRadius = s.cornerRadius ?? 0;
-
-    comp.fills = [boundOrPlain(s.fill ?? '#FFFFFF', s.fillVar)];
-    comp.strokes = [boundOrPlain(s.stroke ?? '#000000', s.strokeVar)];
-    comp.strokeWeight = s.strokeWeight ?? 3;
-
-    if (s.shadow) {
-      comp.effects = [
-        {
-          type: 'DROP_SHADOW',
-          color: hexToRgba(s.shadow.color),
-          offset: { x: s.shadow.x, y: s.shadow.y },
-          radius: 0,
-          spread: 0,
-          visible: true,
-          blendMode: 'NORMAL',
-        },
-      ];
+    comp.name = variantName(variant.props);
+    const bindings: TextBinding[] = [];
+    applyFrame(variant.node, comp);
+    await renderChildren(variant.node, comp, bindings);
+    for (const b of bindings) {
+      const list = bindingsByProp.get(b.prop) ?? [];
+      list.push(b.node);
+      bindingsByProp.set(b.prop, list);
     }
-
-    if (s.text) {
-      const text = figma.createText();
-      text.fontName = buildFont;
-      text.characters = s.text;
-      text.fontSize = s.fontSize ?? 16;
-      text.fills = [boundOrPlain(s.textColor ?? '#000000', s.textColorVar)];
-      comp.appendChild(text);
-    }
-
-    comp.x = cursorX;
-    cursorX += 240;
-    figma.currentPage.appendChild(comp);
+    components.push(comp);
   }
+
+  // Combine into a variant set (gives the VARIANT properties from the names).
+  const set = figma.combineAsVariants(components, figma.currentPage);
+  set.name = spec.name;
+  set.layoutMode = 'HORIZONTAL';
+  set.itemSpacing = 24;
+  set.counterAxisSpacing = 24;
+  set.paddingTop = set.paddingBottom = set.paddingLeft = set.paddingRight = 24;
+
+  // Add TEXT / BOOLEAN component properties and bind referenced nodes.
+  for (const prop of spec.properties ?? []) {
+    const def = set.addComponentProperty(
+      prop.name,
+      prop.type,
+      (prop.default ?? (prop.type === 'TEXT' ? '' : true)) as string | boolean,
+    );
+    if (prop.type === 'TEXT') {
+      for (const node of bindingsByProp.get(prop.name) ?? []) {
+        node.componentPropertyReferences = { characters: def };
+      }
+    }
+  }
+
+  // Position near the viewport and frame it.
+  set.x = Math.round(figma.viewport.center.x - set.width / 2);
+  set.y = Math.round(figma.viewport.center.y - set.height / 2);
+  figma.currentPage.appendChild(set);
+  figma.viewport.scrollAndZoomIntoView([set]);
+
   const message =
-    `Built ${specs.length} component(s) with font "${buildFont.family}". ` +
-    `Paints: ${boundPaintCount} bound to variables, ${plainPaintCount} plain.`;
+    `Built "${spec.name}" set with ${spec.variants.length} variant(s). ` +
+    `Paints: ${boundPaintCount} bound, ${plainPaintCount} plain.`;
   log(message);
-  if (plainPaintCount > 0 && boundPaintCount === 0) {
-    result('build', false, `${message} No paints bound — run Pull first so variables exist.`);
+  if (boundPaintCount === 0 && plainPaintCount > 0) {
+    result('build', false, `${message} No paints bound — run Pull Variables first.`);
   } else {
     result('build', true, message);
   }
 }
 
+// ---- export (push) -------------------------------------------------------
 async function exportState() {
   const collections = await figma.variables.getLocalVariableCollectionsAsync();
   const variables = await figma.variables.getLocalVariablesAsync();
+  const textStyles = await figma.getLocalTextStylesAsync();
   return {
     generatedAt: new Date().toISOString(),
-    collections: collections.map((c) => ({ name: c.name, modes: c.modes.map((m) => m.name) })),
-    variables: variables.map((v) => ({
-      name: v.name,
-      type: v.resolvedType,
-      valuesByMode: v.valuesByMode,
+    collections: collections.map((cl) => ({ name: cl.name, modes: cl.modes.map((m) => m.name) })),
+    variables: variables.map((v) => ({ name: v.name, type: v.resolvedType, valuesByMode: v.valuesByMode })),
+    textStyles: textStyles.map((s) => ({
+      name: s.name,
+      fontName: s.fontName,
+      fontSize: s.fontSize,
     })),
-    components: figma.currentPage.children
-      .filter((n): n is ComponentNode => n.type === 'COMPONENT')
-      .map((n) => ({ name: n.name, width: Math.round(n.width), height: Math.round(n.height) })),
+    componentSets: figma.currentPage.children
+      .filter((n): n is ComponentSetNode => n.type === 'COMPONENT_SET')
+      .map((n) => ({
+        name: n.name,
+        variants: n.children.map((v) => v.name),
+        width: Math.round(n.width),
+        height: Math.round(n.height),
+      })),
   };
 }
 
 figma.ui.onmessage = async (msg: UiToCode) => {
   try {
-    if (msg.type === 'pull-variables') await pullVariables(msg.spec);
-    else if (msg.type === 'build-components') await buildComponents(msg.specs);
-    else if (msg.type === 'export-state') {
+    if (msg.type === 'get-config') {
+      figma.ui.postMessage({ type: 'config', config: await getConfig() });
+    } else if (msg.type === 'save-config') {
+      await saveConfig(msg.config);
+    } else if (msg.type === 'pull-variables') {
+      const v = await pullVariables(msg.spec);
+      const ts = await createTextStyles(msg.textStyles);
+      const message =
+        `Pulled ${v.count} variables (${v.created} new) + ` +
+        `${ts.count} text styles (${ts.created} new).`;
+      log(message);
+      result('pull', true, message);
+    } else if (msg.type === 'build-component') {
+      await buildComponent(msg.spec);
+    } else if (msg.type === 'export-state') {
       figma.ui.postMessage({ type: 'state', payload: await exportState() });
     }
   } catch (error) {
     const message = (error as Error).message;
     log(`Error: ${message}`);
     if (msg.type === 'pull-variables') result('pull', false, message);
-    else if (msg.type === 'build-components') result('build', false, message);
+    else if (msg.type === 'build-component') result('build', false, message);
   }
 };

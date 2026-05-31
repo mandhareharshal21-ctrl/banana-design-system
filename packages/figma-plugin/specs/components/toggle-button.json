@@ -1,0 +1,100 @@
+{
+  "name": "ToggleButton",
+  "properties": [
+    {
+      "name": "Label",
+      "type": "TEXT",
+      "default": "Toggle"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Off"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          10,
+          16,
+          10,
+          16
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 2,
+          "y": 2,
+          "color": "#000000"
+        },
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Toggle",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "On"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          10,
+          16,
+          10,
+          16
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/yellow",
+          "hex": "#FFD23F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": null,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "Toggle",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/onAccent",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          }
+        ]
+      }
+    }
+  ]
+}

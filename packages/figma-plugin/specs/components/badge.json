@@ -1,0 +1,53 @@
+{
+  "name": "Badge",
+  "properties": [
+    {
+      "name": "Content",
+      "type": "TEXT",
+      "default": "4"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          2,
+          8,
+          2,
+          8
+        ],
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/feedback/error",
+          "hex": "#FF3B30"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 2,
+        "fixedWidth": false,
+        "fixedHeight": false,
+        "children": [
+          {
+            "text": "4",
+            "fontStyle": "Bold",
+            "fontSize": 12,
+            "mono": false,
+            "textColor": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "bindText": "Content"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -1,0 +1,64 @@
+{
+  "name": "Slider",
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          0,
+          0,
+          0,
+          0
+        ],
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "width": 240,
+        "height": 28,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "MIN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 2,
+            "width": 240,
+            "height": 8,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": [
+              {
+                "layout": "HORIZONTAL",
+                "primaryAxisAlign": "CENTER",
+                "counterAxisAlign": "CENTER",
+                "cornerRadius": 0,
+                "fill": {
+                  "var": "color/brand/yellow",
+                  "hex": "#FFD23F"
+                },
+                "width": 120,
+                "height": 8,
+                "fixedWidth": true,
+                "fixedHeight": true,
+                "children": []
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

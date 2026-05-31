@@ -1,0 +1,51 @@
+[
+  {
+    "name": "Display/2xl",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Bold",
+    "fontSize": 40
+  },
+  {
+    "name": "Heading/xl",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Bold",
+    "fontSize": 28
+  },
+  {
+    "name": "Heading/lg",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Bold",
+    "fontSize": 20
+  },
+  {
+    "name": "Body/md",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Regular",
+    "fontSize": 16
+  },
+  {
+    "name": "Body/sm",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Regular",
+    "fontSize": 14
+  },
+  {
+    "name": "Label/Button",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Bold",
+    "fontSize": 16,
+    "letterSpacing": 0.5
+  },
+  {
+    "name": "Caption",
+    "fontFamily": "Space Grotesk",
+    "fontStyle": "Regular",
+    "fontSize": 12
+  },
+  {
+    "name": "Mono/sm",
+    "fontFamily": "Space Mono",
+    "fontStyle": "Regular",
+    "fontSize": 14
+  }
+]

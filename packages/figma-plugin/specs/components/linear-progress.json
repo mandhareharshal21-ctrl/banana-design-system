@@ -1,0 +1,46 @@
+{
+  "name": "LinearProgress",
+  "variants": [
+    {
+      "props": {
+        "State": "Determinate"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/white",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 240,
+        "height": 16,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/brand/yellow",
+              "hex": "#FFD23F"
+            },
+            "width": 150,
+            "height": 16,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    }
+  ]
+}

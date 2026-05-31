@@ -1,0 +1,49 @@
+{
+  "name": "Avatar",
+  "properties": [
+    {
+      "name": "Initials",
+      "type": "TEXT",
+      "default": "BA"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/brand/purple",
+          "hex": "#A77BFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 48,
+        "height": 48,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "children": [
+          {
+            "text": "BA",
+            "fontStyle": "Bold",
+            "fontSize": 16,
+            "mono": false,
+            "textColor": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "bindText": "Initials"
+          }
+        ]
+      }
+    }
+  ]
+}

@@ -21,8 +21,14 @@ DTCG token JSON in `packages/tokens/src/tokens/*.json` feeds **both** sides:
 - **Figma**: `packages/figma-plugin/scripts/generate-variables-spec.mjs` imports the same tokens
   and emits `specs/variables.json` (collection / mode / variable mapping). Shadows are skipped
   (they map to Figma effects on components, not Variables).
+- **Components + text styles**: `scripts/generate-component-specs.mjs` imports the same tokens and
+  emits one `specs/components/<slug>.json` per component (each a **component set** with its
+  variants/states + a TEXT component property such as `Label`), a `specs/components.json` manifest
+  (drives the plugin's build list), and `specs/text-styles.json` (typography styles applied on Pull).
 
-Because both derive from the same tokens, code and Figma never drift.
+Because everything derives from the same tokens, code and Figma never drift. To add or change a
+component, edit the builder in `generate-component-specs.mjs` and rebuild — never hand-edit the
+generated JSON.
 
 ## One-time setup
 
@@ -36,12 +42,14 @@ Because both derive from the same tokens, code and Figma never drift.
    This regenerates `specs/variables.json` and bundles `dist/code.js` + `dist/ui.html`.
 3. **Import into Figma**: Figma desktop → Plugins → Development → *Import plugin from
    manifest…* → select `packages/figma-plugin/manifest.json`.
-4. **Run the plugin** and fill the form: Owner `mandhareharshal21-ctrl`, Repo
-   `banana-design-system`, Branch `main`, and paste the PAT. The PAT is stored only in the
-   plugin iframe's `localStorage` — it is never written to the repo.
-5. **Click "Test Connection".** The plugin calls the GitHub API to verify the repo, branch, and
-   token, then reports the result in the status banner. The Pull / Build / Push buttons stay
-   **disabled until the test passes** (green). Editing any field re-locks them so you re-test.
+4. **Run the plugin**, open the **Token setup** dropdown, and fill the form: Owner
+   `mandhareharshal21-ctrl`, Repo `banana-design-system`, Branch `main`, and paste the PAT. The PAT
+   is saved on the plugin via `figma.clientStorage` (persists across runs, scoped to this plugin) —
+   enter it once. It is never written to the repo.
+5. **Click "Test Connection"** (the full-width button below the status banner). The plugin calls the
+   GitHub API to verify the repo, branch, and token, reports the result in the status banner, and
+   loads the component build list. The Pull / Push / Build buttons stay **disabled until the test
+   passes** (green). Editing any field re-locks them so you re-test.
 
 ## Connecting & status states
 
@@ -62,16 +70,21 @@ Common error causes (shown verbatim in the banner + log):
 - **READ-ONLY** — connection works but the token is missing **Contents: write**; Pull/Build still work, Push won't.
 - **Network error** — no connection, or Figma blocked the host. `manifest.json` must allow `api.github.com`.
 
+## Plugin UI layout
+
+Top to bottom: **Token setup** dropdown (collapsible) → **status banner** → full-width **Test
+Connection** button → **Pull Variables** / **Push State** row → **Components** list (one row per
+component with a **Build** button) → activity log.
+
 ## Daily flow
 
-After a green connection test, the plugin UI has three action buttons (each updates the status
-banner with a success/error result):
+After a green connection test, each action updates the status banner with a success/error result:
 
-| Button | What it does |
+| Action | What it does |
 | --- | --- |
-| **Pull Variables** | Fetches `specs/variables.json` via the authenticated GitHub **contents API** (no raw-CDN lag) → creates/updates the `Banana` Variable collection, modes, and typed variables via `setValueForMode`. Run this **first** so components can bind to variables. |
-| **Build Components** | Fetches each spec in `COMPONENT_FILES` (e.g. `components/button.json`) → creates auto-layout components with fills/strokes **bound** to local Variables, hard drop-shadow effects, and text. The log reports `N bound / M plain` paints; if nothing bound, run Pull first. |
-| **Push State** | Serializes current Figma Variables + component metadata → JSON → commits `specs/figma-state.json` back to GitHub via the contents API (GET sha, then PUT base64). Requires **Contents: write**. |
+| **Pull Variables** | Fetches `specs/variables.json` + `specs/text-styles.json` via the authenticated GitHub **contents API** (no raw-CDN lag) → creates/updates the `Banana` Variable collection (modes + typed variables) **and** the Figma **text styles** (typography). Run this **first** so components can bind to variables. |
+| **Build** (per component) | Each row in the Components list fetches that component's spec → builds a **component set** with all its variants/states (e.g. Button: Variant × State), fills/strokes **bound** to local Variables, hard drop-shadow effects, text, and a TEXT **component property** (e.g. `Label`). The log reports `N bound / M plain` paints; if nothing bound, run Pull first. |
+| **Push State** | Serializes current Figma Variables + text styles + component-set metadata → JSON → commits `specs/figma-state.json` back to GitHub via the contents API (GET sha, then PUT base64). Requires **Contents: write**. |
 
 ## Round-trip (refinement loop)
 
@@ -81,18 +94,28 @@ banner with a success/error result):
    `packages/tokens` and `@banana/mui-neo`.
 4. Re-run token + plugin builds; cut a release via Changesets if tokens changed.
 
-## Authoring a new component spec
+## Authoring a new component (or editing one)
 
-1. Add a `ComponentSpec` JSON file under `packages/figma-plugin/specs/components/`.
-2. Reference variables by their slash-path name (e.g. `color/brand/yellow`) in `fillVar`,
-   `strokeVar`, `textColorVar` — these must exist in `variables.json`.
-3. Register the file in `COMPONENT_FILES` in `packages/figma-plugin/src/ui.ts`.
-4. Rebuild the plugin and run **Build Components** in Figma.
+Specs are **generated**, not hand-written. Add or edit a builder function in
+`scripts/generate-component-specs.mjs`:
+
+1. Write a builder returning a `ComponentSetSpec` — `{ name, properties?, variants: [{ props, node }] }`.
+   `props` are the variant keys (e.g. `{ Variant: 'Primary', State: 'Hover' }`); `node` is a
+   recursive `NodeSpec` (auto-layout frame or text). Use the `c('color/brand/yellow')` helper to bind
+   a paint to a variable, and `bind: 'Label'` on a text node to wire a TEXT component property.
+2. Add the builder to the `BUILDERS` array (this also adds it to `components.json` → the UI list).
+3. Rebuild the plugin (`pnpm --filter @banana/figma-plugin build`) and push, then **reload** the
+   plugin in Figma and click the component's **Build** button.
+
+The renderer creates one `ComponentNode` per variant, `combineAsVariants` into a set, then adds the
+declared component properties — so variants/states show up as Figma variant properties automatically.
 
 ## Files
 
 - `packages/figma-plugin/manifest.json` — plugin manifest; `networkAccess.allowedDomains`
   limited to `api.github.com` + `raw.githubusercontent.com`.
-- `packages/figma-plugin/src/code.ts` — sandbox: Variable + component creation (Plugin API).
-- `packages/figma-plugin/src/ui.ts` — iframe UI: GitHub auth, Pull/Build/Push, GitHub I/O.
-- `packages/figma-plugin/specs/` — Claude-authored specs (committed) + pushed-back state.
+- `packages/figma-plugin/src/code.ts` — sandbox: Variables, text styles, and component-set creation.
+- `packages/figma-plugin/src/ui.ts` — iframe UI: token setup, connection test, Pull/Push, build list.
+- `packages/figma-plugin/scripts/generate-component-specs.mjs` — generates component + text-style specs.
+- `packages/figma-plugin/scripts/generate-variables-spec.mjs` — generates the variables spec.
+- `packages/figma-plugin/specs/` — generated specs (committed) + pushed-back `figma-state.json`.

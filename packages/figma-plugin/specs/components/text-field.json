@@ -1,0 +1,286 @@
+{
+  "name": "TextField",
+  "properties": [
+    {
+      "name": "Label",
+      "type": "TEXT",
+      "default": "Label"
+    },
+    {
+      "name": "Value",
+      "type": "TEXT",
+      "default": "Value"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Default"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "itemSpacing": 4,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "width": 240,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Label",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/secondary",
+              "hex": "#3A3A3A"
+            },
+            "bindText": "Label"
+          },
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              10,
+              12,
+              10,
+              12
+            ],
+            "primaryAxisAlign": "MIN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 3,
+            "width": 240,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Value",
+                "fontStyle": "Regular",
+                "fontSize": 16,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                },
+                "bindText": "Value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Focused"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "itemSpacing": 4,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "width": 240,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Label",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/primary",
+              "hex": "#000000"
+            },
+            "bindText": "Label"
+          },
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              10,
+              12,
+              10,
+              12
+            ],
+            "primaryAxisAlign": "MIN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/brand/cyan",
+              "hex": "#3FC1FF"
+            },
+            "strokeWeight": 3,
+            "shadow": {
+              "x": 2,
+              "y": 2,
+              "color": "#000000"
+            },
+            "width": 240,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Value",
+                "fontStyle": "Regular",
+                "fontSize": 16,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                },
+                "bindText": "Value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Error"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "itemSpacing": 4,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "width": 240,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "opacity": 1,
+        "children": [
+          {
+            "text": "Label",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/feedback/error",
+              "hex": "#FF3B30"
+            },
+            "bindText": "Label"
+          },
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              10,
+              12,
+              10,
+              12
+            ],
+            "primaryAxisAlign": "MIN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/feedback/error",
+              "hex": "#FF3B30"
+            },
+            "strokeWeight": 3,
+            "width": 240,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Value",
+                "fontStyle": "Regular",
+                "fontSize": 16,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                },
+                "bindText": "Value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Disabled"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "itemSpacing": 4,
+        "primaryAxisAlign": "CENTER",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "width": 240,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "opacity": 0.5,
+        "children": [
+          {
+            "text": "Label",
+            "fontStyle": "Bold",
+            "fontSize": 14,
+            "mono": false,
+            "textColor": {
+              "var": "color/text/disabled",
+              "hex": "#9A9A9A"
+            },
+            "bindText": "Label"
+          },
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              10,
+              12,
+              10,
+              12
+            ],
+            "primaryAxisAlign": "MIN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/white",
+              "hex": "#FFFFFF"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 3,
+            "width": 240,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Value",
+                "fontStyle": "Regular",
+                "fontSize": 16,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                },
+                "bindText": "Value"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

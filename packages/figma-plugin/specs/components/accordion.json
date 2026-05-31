@@ -1,0 +1,183 @@
+{
+  "name": "Accordion",
+  "properties": [
+    {
+      "name": "Title",
+      "type": "TEXT",
+      "default": "Section"
+    }
+  ],
+  "variants": [
+    {
+      "props": {
+        "State": "Collapsed"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/background/paper",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "width": 320,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              12,
+              14,
+              12,
+              14
+            ],
+            "primaryAxisAlign": "SPACE_BETWEEN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/brand/yellow",
+              "hex": "#FFD23F"
+            },
+            "width": 320,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Section",
+                "fontStyle": "Bold",
+                "fontSize": 16,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                },
+                "bindText": "Title"
+              },
+              {
+                "text": "+",
+                "fontStyle": "Bold",
+                "fontSize": 20,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Expanded"
+      },
+      "node": {
+        "layout": "VERTICAL",
+        "primaryAxisAlign": "MIN",
+        "counterAxisAlign": "MIN",
+        "cornerRadius": 0,
+        "fill": {
+          "var": "color/background/paper",
+          "hex": "#FFFFFF"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "shadow": {
+          "x": 4,
+          "y": 4,
+          "color": "#000000"
+        },
+        "width": 320,
+        "fixedWidth": true,
+        "fixedHeight": false,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              12,
+              14,
+              12,
+              14
+            ],
+            "primaryAxisAlign": "SPACE_BETWEEN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "fill": {
+              "var": "color/brand/yellow",
+              "hex": "#FFD23F"
+            },
+            "width": 320,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Section",
+                "fontStyle": "Bold",
+                "fontSize": 16,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                },
+                "bindText": "Title"
+              },
+              {
+                "text": "–",
+                "fontStyle": "Bold",
+                "fontSize": 20,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/primary",
+                  "hex": "#000000"
+                }
+              }
+            ]
+          },
+          {
+            "layout": "HORIZONTAL",
+            "padding": [
+              12,
+              14,
+              12,
+              14
+            ],
+            "primaryAxisAlign": "MIN",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 0,
+            "width": 320,
+            "fixedWidth": true,
+            "fixedHeight": false,
+            "children": [
+              {
+                "text": "Panel content.",
+                "fontStyle": "Regular",
+                "fontSize": 14,
+                "mono": false,
+                "textColor": {
+                  "var": "color/text/secondary",
+                  "hex": "#3A3A3A"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}
