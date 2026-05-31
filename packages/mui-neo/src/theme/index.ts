@@ -308,6 +308,106 @@ export function createNeoBrutalistTheme(options: ThemeOptions = {}): Theme {
             },
           },
         },
+
+        // --- Group 2: Actions & Navigation ---
+        MuiIconButton: {
+          defaultProps: { disableRipple: true },
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              backgroundColor: color.background.paper,
+              boxShadow: shadow.hard.sm,
+              transition,
+              '&:hover': {
+                boxShadow: shadow.hard.md,
+                transform: 'translate(-1px, -1px)',
+                backgroundColor: color.background.paper,
+              },
+              '&:active': { boxShadow: noShadow, transform: `translate(${press}, ${press})` },
+              '&.Mui-focusVisible': focusRing,
+              '&.Mui-disabled': {
+                boxShadow: 'none',
+                borderColor: color.text.disabled,
+                color: color.text.disabled,
+              },
+            },
+          },
+        },
+        MuiButtonGroup: {
+          defaultProps: { disableElevation: true, disableRipple: true, variant: 'contained' },
+          styleOverrides: {
+            root: { boxShadow: shadow.hard.md },
+            grouped: {
+              boxShadow: 'none',
+              '&:hover': { boxShadow: 'none', transform: 'none' },
+              '&:active': { boxShadow: 'none', transform: 'none' },
+            },
+          },
+        },
+        MuiFab: {
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              border: `${border.width.thick} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+              backgroundColor: color.brand.yellow,
+              color: color.text.onAccent,
+              transition,
+              '&:hover': {
+                boxShadow: shadow.hard.lg,
+                transform: 'translate(-1px, -1px)',
+                backgroundColor: color.brand.yellow,
+              },
+              '&:active': { boxShadow: noShadow, transform: `translate(${press}, ${press})` },
+              '&.Mui-focusVisible': focusRing,
+            },
+            circular: { borderRadius: px(radius.none) },
+            extended: { borderRadius: px(radius.none) },
+          },
+        },
+        MuiLink: {
+          defaultProps: { underline: 'always' },
+          styleOverrides: {
+            root: {
+              color: color.text.primary,
+              fontWeight: font.weight.bold,
+              textDecorationColor: color.brand.pink,
+              textUnderlineOffset: 3,
+              '&:hover': { color: color.brand.pink },
+              '&:focus-visible': focusRing,
+            },
+          },
+        },
+        MuiTabs: {
+          styleOverrides: {
+            root: { borderBottom: `${border.width.thick} solid ${color.border}` },
+            indicator: { height: 4, backgroundColor: color.ink },
+          },
+        },
+        MuiTab: {
+          styleOverrides: {
+            root: {
+              fontFamily: font.family.body,
+              fontWeight: font.weight.bold,
+              letterSpacing: font.letterSpacing.wide,
+              textTransform: 'none',
+              color: color.text.secondary,
+              '&.Mui-selected': { color: color.text.primary, backgroundColor: color.brand.yellow },
+              '&.Mui-focusVisible': focusRing,
+            },
+          },
+        },
+        MuiBreadcrumbs: {
+          styleOverrides: {
+            separator: {
+              color: color.ink,
+              fontFamily: font.family.mono,
+              fontWeight: font.weight.bold,
+            },
+            li: { fontWeight: font.weight.bold },
+          },
+        },
       },
     },
     options,

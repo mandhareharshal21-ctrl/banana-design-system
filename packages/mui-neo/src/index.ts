@@ -65,3 +65,24 @@ export type {
   InputLabelProps,
   FormHelperTextProps,
 } from '@mui/material';
+
+// Group 2 — Actions & Navigation
+export {
+  IconButton,
+  ButtonGroup,
+  Fab,
+  Link,
+  Tabs,
+  Tab,
+  Breadcrumbs,
+} from '@mui/material';
+
+export type {
+  IconButtonProps,
+  ButtonGroupProps,
+  FabProps,
+  LinkProps,
+  TabsProps,
+  TabProps,
+  BreadcrumbsProps,
+} from '@mui/material';
