@@ -31,7 +31,7 @@ jobs:
         run: pnpm build-storybook
         env:
           STORYBOOK_BASE_PATH: /banana-design-system/
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v3
         with:
           path: apps/docs/storybook-static
