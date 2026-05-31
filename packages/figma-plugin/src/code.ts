@@ -65,14 +65,44 @@ async function pullVariables(spec: VariablesSpec) {
   log(`Pulled ${spec.variables.length} variables (${created} new) into "${spec.collection}".`);
 }
 
+let boundPaintCount = 0;
+let plainPaintCount = 0;
+
 function boundOrPlain(hex: string, varName: string | undefined): SolidPaint {
   const paint: SolidPaint = { type: 'SOLID', color: rgb(hex) };
   const variable = varName ? varByName.get(varName) : undefined;
-  return variable ? figma.variables.setBoundVariableForPaint(paint, 'color', variable) : paint;
+  if (variable) {
+    boundPaintCount += 1;
+    return figma.variables.setBoundVariableForPaint(paint, 'color', variable);
+  }
+  plainPaintCount += 1;
+  return paint;
+}
+
+// Populate varByName from the file's existing local variables so Build binds
+// correctly even when run without Pull in the same session.
+async function hydrateVarMap() {
+  const locals = await figma.variables.getLocalVariablesAsync();
+  for (const v of locals) varByName.set(v.name, v);
+}
+
+async function loadBuildFont(): Promise<FontName> {
+  try {
+    const font: FontName = { family: 'Space Grotesk', style: 'Bold' };
+    await figma.loadFontAsync(font);
+    return font;
+  } catch {
+    const fallback: FontName = { family: 'Inter', style: 'Bold' };
+    await figma.loadFontAsync(fallback);
+    return fallback;
+  }
 }
 
 async function buildComponents(specs: ComponentSpec[]) {
-  await figma.loadFontAsync({ family: 'Inter', style: 'Bold' });
+  await hydrateVarMap();
+  const buildFont = await loadBuildFont();
+  boundPaintCount = 0;
+  plainPaintCount = 0;
   let cursorX = 0;
   for (const s of specs) {
     const comp = figma.createComponent();
@@ -109,7 +139,7 @@ async function buildComponents(specs: ComponentSpec[]) {
 
     if (s.text) {
       const text = figma.createText();
-      text.fontName = { family: 'Inter', style: 'Bold' };
+      text.fontName = buildFont;
       text.characters = s.text;
       text.fontSize = s.fontSize ?? 16;
       text.fills = [boundOrPlain(s.textColor ?? '#000000', s.textColorVar)];
@@ -120,7 +150,10 @@ async function buildComponents(specs: ComponentSpec[]) {
     cursorX += 240;
     figma.currentPage.appendChild(comp);
   }
-  log(`Built ${specs.length} component(s).`);
+  log(
+    `Built ${specs.length} component(s) with font "${buildFont.family}". ` +
+      `Paints: ${boundPaintCount} bound to variables, ${plainPaintCount} plain.`,
+  );
 }
 
 async function exportState() {
