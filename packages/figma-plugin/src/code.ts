@@ -10,6 +10,10 @@ function log(message: string) {
   figma.ui.postMessage({ type: 'log', message });
 }
 
+function result(action: 'pull' | 'build', ok: boolean, message: string) {
+  figma.ui.postMessage({ type: 'result', action, ok, message });
+}
+
 function hexToRgba(hex: string) {
   const h = hex.replace('#', '');
   const full = h.length === 3
@@ -62,7 +66,9 @@ async function pullVariables(spec: VariablesSpec) {
     }
     varByName.set(v.name, variable);
   }
-  log(`Pulled ${spec.variables.length} variables (${created} new) into "${spec.collection}".`);
+  const message = `Pulled ${spec.variables.length} variables (${created} new) into "${spec.collection}".`;
+  log(message);
+  result('pull', true, message);
 }
 
 let boundPaintCount = 0;
@@ -150,10 +156,15 @@ async function buildComponents(specs: ComponentSpec[]) {
     cursorX += 240;
     figma.currentPage.appendChild(comp);
   }
-  log(
+  const message =
     `Built ${specs.length} component(s) with font "${buildFont.family}". ` +
-      `Paints: ${boundPaintCount} bound to variables, ${plainPaintCount} plain.`,
-  );
+    `Paints: ${boundPaintCount} bound to variables, ${plainPaintCount} plain.`;
+  log(message);
+  if (plainPaintCount > 0 && boundPaintCount === 0) {
+    result('build', false, `${message} No paints bound — run Pull first so variables exist.`);
+  } else {
+    result('build', true, message);
+  }
 }
 
 async function exportState() {
@@ -181,6 +192,9 @@ figma.ui.onmessage = async (msg: UiToCode) => {
       figma.ui.postMessage({ type: 'state', payload: await exportState() });
     }
   } catch (error) {
-    log(`Error: ${(error as Error).message}`);
+    const message = (error as Error).message;
+    log(`Error: ${message}`);
+    if (msg.type === 'pull-variables') result('pull', false, message);
+    else if (msg.type === 'build-components') result('build', false, message);
   }
 };

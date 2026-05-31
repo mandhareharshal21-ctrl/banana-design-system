@@ -39,16 +39,39 @@ Because both derive from the same tokens, code and Figma never drift.
 4. **Run the plugin** and fill the form: Owner `mandhareharshal21-ctrl`, Repo
    `banana-design-system`, Branch `main`, and paste the PAT. The PAT is stored only in the
    plugin iframe's `localStorage` — it is never written to the repo.
+5. **Click "Test Connection".** The plugin calls the GitHub API to verify the repo, branch, and
+   token, then reports the result in the status banner. The Pull / Build / Push buttons stay
+   **disabled until the test passes** (green). Editing any field re-locks them so you re-test.
+
+## Connecting & status states
+
+The status banner above the action buttons reflects the GitHub connection:
+
+| Banner | Meaning |
+| --- | --- |
+| **NOT CONNECTED** (grey) | Initial state, or inputs changed — fill the form and Test Connection. |
+| **CHECKING…** (yellow) | A connection test is in flight. |
+| **CONNECTED** (green) | Repo + branch reachable and token valid. Shows `owner/repo@branch · write OK` (or `READ-ONLY` if the token lacks Contents: write — Push will fail). Actions unlock. |
+| **ERROR** (pink) | Something failed; the banner names the cause (see below). Actions stay locked. |
+
+Common error causes (shown verbatim in the banner + log):
+
+- **401 Unauthorized** — the PAT is missing, invalid, or expired. Regenerate it.
+- **403 Forbidden** — token lacks permission, SSO is not authorized for the org, or you are rate-limited.
+- **404 Not found** — wrong Owner/Repo/Branch, or the fine-grained PAT doesn't grant access to this repo.
+- **READ-ONLY** — connection works but the token is missing **Contents: write**; Pull/Build still work, Push won't.
+- **Network error** — no connection, or Figma blocked the host. `manifest.json` must allow `api.github.com`.
 
 ## Daily flow
 
-The plugin UI has three buttons:
+After a green connection test, the plugin UI has three action buttons (each updates the status
+banner with a success/error result):
 
 | Button | What it does |
 | --- | --- |
-| **Pull Variables** | Fetches `specs/variables.json` from GitHub (raw) → creates/updates the `Banana` Variable collection, modes, and typed variables via `setValueForMode`. Run this **first** so components can bind to variables. |
-| **Build Components** | Fetches each spec in `COMPONENT_FILES` (e.g. `components/button.json`) → creates auto-layout components with fills/strokes **bound** to the pulled Variables, hard drop-shadow effects, and text. |
-| **Push State** | Serializes current Figma Variables + component metadata → JSON → commits `specs/figma-state.json` back to GitHub via the contents API (GET sha, then PUT base64). |
+| **Pull Variables** | Fetches `specs/variables.json` via the authenticated GitHub **contents API** (no raw-CDN lag) → creates/updates the `Banana` Variable collection, modes, and typed variables via `setValueForMode`. Run this **first** so components can bind to variables. |
+| **Build Components** | Fetches each spec in `COMPONENT_FILES` (e.g. `components/button.json`) → creates auto-layout components with fills/strokes **bound** to local Variables, hard drop-shadow effects, and text. The log reports `N bound / M plain` paints; if nothing bound, run Pull first. |
+| **Push State** | Serializes current Figma Variables + component metadata → JSON → commits `specs/figma-state.json` back to GitHub via the contents API (GET sha, then PUT base64). Requires **Contents: write**. |
 
 ## Round-trip (refinement loop)
 

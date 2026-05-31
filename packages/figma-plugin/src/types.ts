@@ -37,4 +37,5 @@ export type UiToCode =
 
 export type CodeToUi =
   | { type: 'log'; message: string }
+  | { type: 'result'; action: 'pull' | 'build'; ok: boolean; message: string }
   | { type: 'state'; payload: unknown };
