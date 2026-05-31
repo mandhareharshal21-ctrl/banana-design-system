@@ -13,20 +13,42 @@ interface Config {
 
 const $ = <T extends HTMLElement>(id: string) => document.getElementById(id) as T;
 
+// Figma's plugin UI runs in a sandboxed null-origin iframe where localStorage
+// access can throw SecurityError. Wrap it and fall back to an in-memory store so
+// a throw never kills UI bootstrap (which would leave dead buttons + no error).
+const memStore: Record<string, string> = {};
+
+function storeGet(key: string): string | null {
+  try {
+    return localStorage.getItem(key);
+  } catch {
+    return key in memStore ? memStore[key] : null;
+  }
+}
+
+function storeSet(key: string, value: string) {
+  memStore[key] = value;
+  try {
+    localStorage.setItem(key, value);
+  } catch {
+    /* in-memory only for this session */
+  }
+}
+
 function loadConfig(): Config {
   return {
-    owner: localStorage.getItem('banana.owner') ?? 'mandhareharshal21-ctrl',
-    repo: localStorage.getItem('banana.repo') ?? 'banana-design-system',
-    branch: localStorage.getItem('banana.branch') ?? 'main',
-    token: localStorage.getItem('banana.token') ?? '',
+    owner: storeGet('banana.owner') ?? 'mandhareharshal21-ctrl',
+    repo: storeGet('banana.repo') ?? 'banana-design-system',
+    branch: storeGet('banana.branch') ?? 'main',
+    token: storeGet('banana.token') ?? '',
   };
 }
 
 function saveConfig(cfg: Config) {
-  localStorage.setItem('banana.owner', cfg.owner);
-  localStorage.setItem('banana.repo', cfg.repo);
-  localStorage.setItem('banana.branch', cfg.branch);
-  localStorage.setItem('banana.token', cfg.token);
+  storeSet('banana.owner', cfg.owner);
+  storeSet('banana.repo', cfg.repo);
+  storeSet('banana.branch', cfg.branch);
+  storeSet('banana.token', cfg.token);
 }
 
 function log(message: string) {
@@ -275,6 +297,16 @@ document.body.innerHTML = `
   </details>
   <pre id="log"></pre>
 `;
+
+// Surface any uncaught error in the iframe instead of dying silently.
+window.onerror = (message) => {
+  const el = document.getElementById('status');
+  if (el) {
+    el.style.background = '#FF5CA2';
+    el.textContent = `ERROR — UI crashed: ${message}`;
+  }
+  return false;
+};
 
 const initial = loadConfig();
 $<HTMLInputElement>('owner').value = initial.owner;
