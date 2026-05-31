@@ -45,20 +45,22 @@ docs/figma-workflow.md                     — token→variable→component runb
 
 ## 4. Tooling
 
-TypeScript · React 19 · MUI v7 (Emotion) · tsup (package builds) · Style Dictionary (DTCG tokens) ·
-Storybook 8 (React-Vite) · Changesets (versioning) · ESLint + Prettier · Vitest + Testing Library.
+TypeScript · React 19 · MUI v7 (Emotion) · tsup (package builds) · owned DTCG token builder
+(`packages/tokens/build.mjs` → CSS vars + typed TS; chosen over Style Dictionary to avoid its
+composite-shadow/alias quirks) · esbuild (Figma plugin bundle) · Storybook 8 (React-Vite) ·
+Changesets (versioning) · ESLint + Prettier · Vitest + Testing Library.
 
 ## 5. Pipeline phases & current status
 
-- [x] Phase 0 — Repo + infra bootstrap
-- [ ] Phase 1 — Define neo-brutalism (`docs/neo-brutalism.md`)
-- [ ] Phase 2 — Tokens + theme
-- [ ] Phase 3 — Core components + tests
-- [ ] Phase 4 — Storybook → GitHub Pages
-- [ ] Phase 5 — User review + refinement
-- [ ] Phase 6 — Figma plugin + variable sync (before components)
-- [ ] Phase 7 — Build components in Figma (git-spec pull)
-- [ ] Phase 8 — Refine in Figma, plugin pushes back
+- [x] Phase 0 — Repo + infra bootstrap (pushed to GitHub, CI green, Pages live, Dependabot active)
+- [x] Phase 1 — Define neo-brutalism (`docs/neo-brutalism.md`)
+- [x] Phase 2 — Tokens + theme (owned DTCG builder → CSS/TS; `createNeoBrutalistTheme()`)
+- [x] Phase 3 — Core components + tests (Button, TextField, Card, Checkbox, Switch, Badge, Typography, Container)
+- [x] Phase 4 — Storybook → GitHub Pages (live: https://mandhareharshal21-ctrl.github.io/banana-design-system/)
+- [ ] Phase 5 — User review + refinement (NEXT: user reviews hosted Storybook)
+- [~] Phase 6 — Figma plugin + variable sync — plugin built & committed; `specs/variables.json` generated. Pending: run Pull in Figma.
+- [~] Phase 7 — Build components in Figma — Button build-spec authored (`specs/components/button.json`). Pending: run Build in Figma.
+- [~] Phase 8 — Refine in Figma, plugin pushes back — Push code written. Pending: exercise round-trip in Figma.
 - [ ] Phase 9 — Per-component improvement loop (steady state)
 
 > Keep this checklist current as phases complete.
