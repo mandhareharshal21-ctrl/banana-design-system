@@ -103,7 +103,7 @@ export const Tables: Story = {
         <TableBody>
           <TableRow>
             <TableCell>brand/yellow</TableCell>
-            <TableCell>#FFD23F</TableCell>
+            <TableCell>#FFE181</TableCell>
           </TableRow>
           <TableRow>
             <TableCell>border/width/regular</TableCell>
