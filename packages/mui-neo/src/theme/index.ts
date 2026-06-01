@@ -167,27 +167,30 @@ export function createNeoBrutalistTheme(options: ThemeOptions = {}): Theme {
         },
         MuiSwitch: {
           styleOverrides: {
-            root: { width: 60, height: 34, padding: 6 },
+            root: { width: 52, height: 30, padding: 0 },
             switchBase: {
-              padding: 7,
+              padding: '5px 7px',
               '&.Mui-checked': {
-                transform: 'translateX(26px)',
+                transform: 'translateX(18px)',
                 '& + .MuiSwitch-track': { backgroundColor: color.brand.lime, opacity: 1 },
               },
               '&.Mui-focusVisible .MuiSwitch-thumb': focusRing,
+              '&.Mui-disabled .MuiSwitch-thumb': { opacity: 0.5 },
+              '&.Mui-disabled + .MuiSwitch-track': { opacity: 0.5 },
             },
             thumb: {
-              width: 16,
-              height: 16,
-              borderRadius: 0,
+              width: 20,
+              height: 20,
+              borderRadius: 999,
               backgroundColor: color.ink,
               boxShadow: 'none',
             },
             track: {
-              borderRadius: 0,
-              border: `${border.width.thin} solid ${color.border}`,
+              borderRadius: 999,
+              border: `${border.width.regular} solid ${color.border}`,
               backgroundColor: color.white,
               opacity: 1,
+              boxSizing: 'border-box',
             },
           },
         },

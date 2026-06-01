@@ -49,7 +49,7 @@ function f(o = {}) {
     itemSpacing: o.gap,
     primaryAxisAlign: o.main ?? 'CENTER',
     counterAxisAlign: o.cross ?? 'CENTER',
-    cornerRadius: 0,
+    cornerRadius: o.radius ?? 0,
     fill: o.fill,
     stroke: o.stroke,
     strokeWeight: o.sw,
@@ -80,6 +80,7 @@ function glyph(o = {}) {
   return f({
     w: o.size ?? 20,
     h: o.size ?? 20,
+    radius: o.radius,
     fill: o.fill ?? c('color/white'),
     stroke: o.stroke ?? border(),
     sw: o.sw ?? 2,
@@ -289,10 +290,14 @@ function radio() {
 }
 
 function switchComp() {
+  // Pill-shaped switch (matches Figma node 15-169). State names + visuals mirror
+  // the Figma source exactly: 'Disabled ON' is drawn in the OFF position and
+  // 'Disabled OFF' in the ON position.
   const map = {
     Off: { fill: c('color/white'), main: 'MIN' },
     On: { fill: c('color/brand/lime'), main: 'MAX' },
-    Disabled: { fill: c('color/white'), main: 'MIN', op: 0.5 },
+    'Disabled ON': { fill: c('color/white'), main: 'MIN', op: 0.5 },
+    'Disabled OFF': { fill: c('color/brand/lime'), main: 'MAX', op: 0.5 },
   };
   return {
     name: 'Switch',
@@ -301,14 +306,15 @@ function switchComp() {
       node: f({
         w: 52,
         h: 30,
-        padding: [3, 3, 3, 3],
+        radius: 999,
+        padding: [3, 4, 3, 4],
         main: st.main,
         cross: 'CENTER',
         fill: st.fill,
         stroke: border(),
         sw: 3,
         opacity: st.op ?? 1,
-        children: [glyph({ size: 20, fill: c('color/ink'), sw: 0 })],
+        children: [glyph({ size: 20, radius: 999, fill: c('color/ink'), sw: 0 })],
       }),
     })),
   };

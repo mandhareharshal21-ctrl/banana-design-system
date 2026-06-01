@@ -9,13 +9,13 @@
         "layout": "HORIZONTAL",
         "padding": [
           3,
+          4,
           3,
-          3,
-          3
+          4
         ],
         "primaryAxisAlign": "MIN",
         "counterAxisAlign": "CENTER",
-        "cornerRadius": 0,
+        "cornerRadius": 999,
         "fill": {
           "var": "color/white",
           "hex": "#FFFFFF"
@@ -35,7 +35,7 @@
             "layout": "HORIZONTAL",
             "primaryAxisAlign": "CENTER",
             "counterAxisAlign": "CENTER",
-            "cornerRadius": 0,
+            "cornerRadius": 999,
             "fill": {
               "var": "color/ink",
               "hex": "#000000"
@@ -62,13 +62,13 @@
         "layout": "HORIZONTAL",
         "padding": [
           3,
+          4,
           3,
-          3,
-          3
+          4
         ],
         "primaryAxisAlign": "MAX",
         "counterAxisAlign": "CENTER",
-        "cornerRadius": 0,
+        "cornerRadius": 999,
         "fill": {
           "var": "color/brand/lime",
           "hex": "#9EFF3F"
@@ -88,7 +88,7 @@
             "layout": "HORIZONTAL",
             "primaryAxisAlign": "CENTER",
             "counterAxisAlign": "CENTER",
-            "cornerRadius": 0,
+            "cornerRadius": 999,
             "fill": {
               "var": "color/ink",
               "hex": "#000000"
@@ -109,19 +109,19 @@
     },
     {
       "props": {
-        "State": "Disabled"
+        "State": "Disabled ON"
       },
       "node": {
         "layout": "HORIZONTAL",
         "padding": [
           3,
+          4,
           3,
-          3,
-          3
+          4
         ],
         "primaryAxisAlign": "MIN",
         "counterAxisAlign": "CENTER",
-        "cornerRadius": 0,
+        "cornerRadius": 999,
         "fill": {
           "var": "color/white",
           "hex": "#FFFFFF"
@@ -141,7 +141,60 @@
             "layout": "HORIZONTAL",
             "primaryAxisAlign": "CENTER",
             "counterAxisAlign": "CENTER",
-            "cornerRadius": 0,
+            "cornerRadius": 999,
+            "fill": {
+              "var": "color/ink",
+              "hex": "#000000"
+            },
+            "stroke": {
+              "var": "color/border",
+              "hex": "#000000"
+            },
+            "strokeWeight": 0,
+            "width": 20,
+            "height": 20,
+            "fixedWidth": true,
+            "fixedHeight": true,
+            "children": []
+          }
+        ]
+      }
+    },
+    {
+      "props": {
+        "State": "Disabled OFF"
+      },
+      "node": {
+        "layout": "HORIZONTAL",
+        "padding": [
+          3,
+          4,
+          3,
+          4
+        ],
+        "primaryAxisAlign": "MAX",
+        "counterAxisAlign": "CENTER",
+        "cornerRadius": 999,
+        "fill": {
+          "var": "color/brand/lime",
+          "hex": "#9EFF3F"
+        },
+        "stroke": {
+          "var": "color/border",
+          "hex": "#000000"
+        },
+        "strokeWeight": 3,
+        "width": 52,
+        "height": 30,
+        "fixedWidth": true,
+        "fixedHeight": true,
+        "opacity": 0.5,
+        "children": [
+          {
+            "layout": "HORIZONTAL",
+            "primaryAxisAlign": "CENTER",
+            "counterAxisAlign": "CENTER",
+            "cornerRadius": 999,
             "fill": {
               "var": "color/ink",
               "hex": "#000000"
