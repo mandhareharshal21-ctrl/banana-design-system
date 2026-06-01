@@ -48,6 +48,7 @@ docs/figma-workflow.md                     — token→variable→component runb
 .changeset/                                — Changesets versioning
 .claude/skills/figma-build-author/         — project skill: replicate Banana components in Figma (use_figma) + plugin spec discipline
 .claude/skills/figma-replicate-from-code/  — generic, portable skill: replicate any coded component in Figma via use_figma (no project specifics)
+figma-replicate-from-code.SKILL.md         — root-level readable copy of the portable skill (for discovery/sharing; active copy lives in .claude/skills/)
 ```
 
 ## 4. Tooling
