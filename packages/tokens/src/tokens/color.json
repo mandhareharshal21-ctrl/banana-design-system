@@ -4,10 +4,10 @@
     "paper": { "$type": "color", "$value": "#FFFDF5" },
     "white": { "$type": "color", "$value": "#FFFFFF" },
     "brand": {
-      "yellow": { "$type": "color", "$value": "#FFD23F" },
+      "yellow": { "$type": "color", "$value": "#FFE181" },
       "pink": { "$type": "color", "$value": "#FF5CA2" },
       "cyan": { "$type": "color", "$value": "#3FC1FF" },
-      "lime": { "$type": "color", "$value": "#9EFF3F" },
+      "lime": { "$type": "color", "$value": "#BCFF7A" },
       "purple": { "$type": "color", "$value": "#A77BFF" }
     },
     "feedback": {

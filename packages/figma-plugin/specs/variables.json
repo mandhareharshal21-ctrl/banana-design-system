@@ -71,7 +71,7 @@
       "name": "color/brand/yellow",
       "type": "COLOR",
       "valuesByMode": {
-        "Default": "#FFD23F"
+        "Default": "#FFE181"
       }
     },
     {
@@ -92,7 +92,7 @@
       "name": "color/brand/lime",
       "type": "COLOR",
       "valuesByMode": {
-        "Default": "#9EFF3F"
+        "Default": "#BCFF7A"
       }
     },
     {

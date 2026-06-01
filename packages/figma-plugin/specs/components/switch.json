@@ -71,7 +71,7 @@
         "cornerRadius": 999,
         "fill": {
           "var": "color/brand/lime",
-          "hex": "#9EFF3F"
+          "hex": "#BCFF7A"
         },
         "stroke": {
           "var": "color/border",
@@ -177,7 +177,7 @@
         "cornerRadius": 999,
         "fill": {
           "var": "color/brand/lime",
-          "hex": "#9EFF3F"
+          "hex": "#BCFF7A"
         },
         "stroke": {
           "var": "color/border",

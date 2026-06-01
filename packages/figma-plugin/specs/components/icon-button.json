@@ -41,7 +41,7 @@
             "cornerRadius": 0,
             "fill": {
               "var": "color/brand/yellow",
-              "hex": "#FFD23F"
+              "hex": "#FFE181"
             },
             "stroke": {
               "var": "color/border",
@@ -97,7 +97,7 @@
             "cornerRadius": 0,
             "fill": {
               "var": "color/brand/yellow",
-              "hex": "#FFD23F"
+              "hex": "#FFE181"
             },
             "stroke": {
               "var": "color/border",
@@ -149,7 +149,7 @@
             "cornerRadius": 0,
             "fill": {
               "var": "color/brand/yellow",
-              "hex": "#FFD23F"
+              "hex": "#FFE181"
             },
             "stroke": {
               "var": "color/border",
@@ -205,7 +205,7 @@
             "cornerRadius": 0,
             "fill": {
               "var": "color/brand/yellow",
-              "hex": "#FFD23F"
+              "hex": "#FFE181"
             },
             "stroke": {
               "var": "color/border",
