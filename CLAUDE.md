@@ -18,11 +18,16 @@ per-component improvement loop driven by shared Figma designs.**
 
 - **MUI usage**: consume `@mui/material` as an npm **dependency** + a custom theme/wrappers. NOT a fork of
   the MUI monorepo. Keeps Dependabot upgrades clean.
-- **Figma integration**: Claude **cannot** write Figma files directly (cloud-only; the in-Figma Plugin API
-  is the only write path). REST Variables write is Enterprise-only. So we ship our **own first-party Figma
-  plugin** (`packages/figma-plugin`). No Tokens Studio, no third-party/bridge MCP.
-- **Claude → Figma channel**: **git-spec pull**. Claude authors declarative JSON specs in the repo; the
-  plugin pulls + renders them; refinement round-trips by the plugin exporting Figma state → JSON → git.
+- **Figma integration**: REST Variables write is Enterprise-only, so we ship our **own first-party Figma
+  plugin** (`packages/figma-plugin`) as the **bulk** variable-sync + multi-component build path. No Tokens
+  Studio, no third-party/bridge MCP. **Update (2026-06-01):** the Figma MCP tool **`use_figma`** runs the
+  full Figma Plugin API by `fileKey` and **is** a sanctioned high-fidelity write path — it is the
+  **primary** tool for replicating/correcting a single component exactly from code (the plugin DSL only
+  approximates: single blur-0 shadow, only COLOR binds, raw-number geometry). The plugin stays the bulk
+  Pull/Build/Push mechanism; `use_figma` is the precision per-component tool.
+- **Claude → Figma channel**: two paths — (1) **git-spec pull** (Claude authors JSON specs → plugin pulls
+  + renders → exports state → git) for bulk work; (2) **`use_figma` MCP** for exact per-component
+  replication, verified by `get_screenshot` diff vs Storybook. See `.claude/skills/figma-build-author`.
 - **Repo**: `banana-design-system`, public, GitHub `mandhareharshal21-ctrl`.
 - **Structure**: pnpm monorepo (workspaces). **Hosting**: Storybook → GitHub Pages.
 - **First components**: Button, TextField, Card, Checkbox, Switch, Badge, Typography, Container.
@@ -41,6 +46,8 @@ docs/neo-brutalism.md                      — definition + stylization rules
 docs/figma-workflow.md                     — token→variable→component runbook (+ PAT setup)
 .github/dependabot.yml, workflows/         — Dependabot + CI + Pages deploy
 .changeset/                                — Changesets versioning
+.claude/skills/figma-build-author/         — project skill: replicate Banana components in Figma (use_figma) + plugin spec discipline
+.claude/skills/figma-replicate-from-code/  — generic, portable skill: replicate any coded component in Figma via use_figma (no project specifics)
 ```
 
 ## 4. Tooling
@@ -82,9 +89,21 @@ pnpm version              # apply changesets -> bump versions + changelog
 
 ## 7. Figma workflow
 
-See `docs/figma-workflow.md`. Summary: tokens (source of truth) → `figma-plugin/specs/*.json` → run the
-plugin in Figma (Pull = create Variables, Build = create components, Push = export state back to GitHub).
-Requires a GitHub PAT scoped to this repo, entered in the plugin UI.
+See `docs/figma-workflow.md`. **Bulk path:** tokens (source of truth) → `figma-plugin/specs/*.json` → run
+the plugin in Figma (Pull = create Variables, Build = create components, Push = export state back to
+GitHub). Requires a GitHub PAT scoped to this repo, entered in the plugin UI.
+
+**Precision path (per component):** read the coded `Mui<X>` override + tokens → replicate exactly with the
+`use_figma` MCP (full Plugin API: exact geometry, hard shadows, fonts, and paints **bound** to the
+already-pulled `Banana` variables) → verify by `get_screenshot` diff vs the Storybook render. The
+**`figma-build-author`** skill (`.claude/skills/figma-build-author/SKILL.md`) auto-surfaces this discipline
+and the recipes for the four discrepancy classes (geometry, shadow, typography, variable binding). A
+**generic, project-agnostic** version of the same `use_figma` discipline lives in
+`.claude/skills/figma-replicate-from-code/SKILL.md` — portable for any design system, no Banana/neo-brutalist
+specifics. Precision builds are **on-demand only** (run when explicitly asked); the plugin remains the
+default bulk-build path. Proven end-to-end on the **Slider** (2026-06-01): built via `use_figma`, all paints
+bound (`get_variable_defs` confirmed `color/white`, `color/border`, `color/brand/yellow`), geometry + hard
+shadow matched the coded override.
 
 ## 8. Version Log
 

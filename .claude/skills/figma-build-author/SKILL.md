@@ -1,83 +1,156 @@
 ---
 name: figma-build-author
-description: Authoring discipline for the Banana design system's Figma build pipeline. Use when adding or editing Figma component build-specs (packages/figma-plugin/scripts/generate-component-specs.mjs and specs/components/*.json), editing the variables spec (generate-variables-spec.mjs / specs/variables.json), or improving Figma build fidelity and variable binding. Apply before authoring any spec the plugin will materialize in Figma.
+description: Precision discipline for replicating Banana design-system components in Figma so the canvas matches the code exactly. Use when building/replicating/correcting a Banana component in Figma via the Figma MCP (`use_figma`), when fixing geometry/spacing, shadow, typography, or variable-binding discrepancies between the repo and a Figma file, or when authoring/editing the custom plugin's build-specs (packages/figma-plugin/scripts/generate-component-specs.mjs, specs/components/*.json) or the variables spec. Apply before writing any Figma or any spec the plugin will materialize.
 ---
 
 # Figma build-author
 
-How to author specs the Banana Figma plugin renders well, with everything bound to variables.
-This is authoring discipline — for the Pull/Build/Push operating flow see `docs/figma-workflow.md`,
-and treat `packages/figma-plugin/src/types.ts` as the schema source of truth.
+How to make a Banana component in Figma look **identical to the coded component**, with every paint bound
+to a variable. The code is the source of truth; Figma is the replica. For the Pull/Build/Push operating
+flow see `docs/figma-workflow.md`; treat `packages/figma-plugin/src/types.ts` as the plugin schema source.
 
-## How the pipeline works (1-paragraph mental model)
+## The one rule that fixes discrepancies
 
-Tokens (`packages/tokens`) are the single source of truth. Two generators read them:
-`generate-variables-spec.mjs` → `specs/variables.json` (+ `specs/text-styles.json`), and
-`generate-component-specs.mjs` → one `specs/components/<slug>.json` per component + a
-`specs/components.json` manifest. The plugin fetches these from **GitHub `main`** at runtime, then the
-sandbox renderer (`src/code.ts`) materializes Figma Variables (Pull) and component sets (Build). Paints
-bind to variables **only if** their variable name already exists in the file (i.e. Pull ran first).
+**Never eyeball. Copy the numbers from the code.** Every discrepancy (wrong size, blurred shadow, wrong
+font, plain-hex fill) comes from approximating instead of reading the exact value out of
+`packages/mui-neo/src/theme/index.ts` and `packages/tokens`. Open the override, resolve the tokens, build
+a property table, then reproduce it.
 
-## Golden rules
+## Two build paths — pick the right one
 
-1. **Generate, never hand-edit JSON.** Add or edit a builder function in
-   `generate-component-specs.mjs`, register it in the `BUILDERS` array (this also adds it to the plugin's
-   Build list via `components.json`), then rebuild: `pnpm --filter @banana/figma-plugin build`. Editing a
-   `specs/*.json` by hand will be overwritten on the next build.
-2. **Bind every paint to a variable.** Use the `c('color/...')` helper for every `fill`, `stroke`, and
-   `textColor` so each `PaintRef` carries a `var`. A `PaintRef` with no `var` (or a `var` that doesn't
-   match a real variable) silently renders as an **unbound plain hex** — see `paintOf` and the
-   bound-vs-plain counters in `code.ts`. The variable name must exactly match one emitted by
-   `generate-variables-spec.mjs` (e.g. `color/brand/yellow`, `color/border`, `color/text/onAccent`).
-3. **Pull before Build.** Pull populates the file's variables so binding can resolve; Build also
-   self-hydrates from local variables (`hydrateVarMap`), but Pull-first guarantees names exist.
-4. **Confirm 0 plain paints.** After Build, the plugin log reports `N bound / M plain`. `M` should be 0.
-   If not, a `var` name is wrong or the variable wasn't pulled.
-5. **Push before you expect to see it.** The plugin reads specs from GitHub `main` — an unpushed commit
-   means Build keeps producing the *old* component. Always `git push` after `pnpm --filter
-   @banana/figma-plugin build` + commit.
+| Path | Use it for | Fidelity |
+| --- | --- | --- |
+| **`use_figma` MCP (primary)** | Replicate or correct **one** component exactly from code; fix discrepancies. Runs arbitrary JS via the **full Figma Plugin API** by `fileKey` — no DSL ceiling. | Pixel-exact |
+| **Custom plugin (secondary)** | **Pull** variables into the file; **bulk-build** many components from committed `specs/*.json`. | DSL-limited (approximate) |
 
-## Supported node DSL (`NodeSpec` in `types.ts`)
+The plugin's DSL is why builds drift (single blur-0 shadow, only COLOR binds, raw-number geometry). For
+anything where the user reports a mismatch, use `use_figma`. **Always run plugin Pull first** so the
+`Banana` variable collection exists — `use_figma` binds paints to variables *by name*, and they must
+already be in the file.
 
-A node is a **text node** if `text` is set, otherwise an **auto-layout frame**.
+## Step 1 — Read the coded component (source of truth)
 
-- **Frame:** `layout` (`HORIZONTAL`|`VERTICAL`), `padding` `[top,right,bottom,left]`, `itemSpacing`,
-  `primaryAxisAlign` / `counterAxisAlign` (`MIN`|`CENTER`|`MAX`[|`SPACE_BETWEEN`]), `cornerRadius`,
-  `fill`, `stroke`, `strokeWeight`, `opacity`, `fixedWidth`/`fixedHeight` (+ `width`/`height`),
-  `shadow` `{x, y, color}` (a single hard drop shadow — **blur is always 0**), `children`.
-- **Text:** `text`, `fontStyle` (`Regular`|`Medium`|`Bold`), `mono` (Space Mono vs Space Grotesk),
-  `letterSpacing`, `textColor`, `bindText` (wires the characters to a TEXT component property).
-- **Variants & properties:** a `ComponentSetSpec` has `variants: [{ props, node }]`; `props` keys
-  (e.g. `{ Variant:'Primary', State:'Hover' }`) become Figma VARIANT properties via
-  `combineAsVariants`. Declare TEXT/BOOLEAN component properties in `properties`.
+Before touching Figma, open the `components.Mui<X>.styleOverrides` block in
+`packages/mui-neo/src/theme/index.ts` and resolve each token from `packages/tokens`. Build a
+**variant × state property table** capturing every visual fact:
 
-Generator helpers already available: `c(path)` (bound paint), `f(opts)` (frame; pass `radius` for
-corner radius), `t(text, opts)` (text), `glyph(opts)` (box icon stand-in; pass `radius`), `border()`
-(→ `color/border`), `SH.sm|md|lg` (hard shadow offsets), `SIZE.xs…xxl` (font sizes), `STATES`.
+- size (`width`/`height` or hug), `padding`, `itemSpacing`/gap, `cornerRadius`
+- `border` width + color, `fill`
+- font family / weight / size / letterSpacing / lineHeight
+- shadow offset + color (and which token: `shadow.hard.sm|md|lg`)
+- per-state deltas: hover (translate + larger shadow), active (translate + shadow collapse), focus
+  (focus ring), disabled (opacity / bg).
 
-## Renderer limits — design around these
+CSS pseudo-states (`:hover`, `:active`, `.Mui-disabled`) have no equivalent in a Figma component — encode
+each as a **variant** (`State=Default|Hover|Active|Focus|Disabled`), mirroring the existing
+`specs/components/button.json` matrix.
 
-- **Only COLOR paints bind.** FLOAT/STRING/BOOLEAN variables exist but are **not** wired to sizes,
-  spacing, or radius — those stay raw numbers in the spec. Don't expect dimension tokens to bind.
-- **Shadows:** exactly one DROP_SHADOW per node, blur forced to 0, no spread, no inner shadow.
-- **Fonts:** text is Space Grotesk (or Space Mono when `mono`), `fontStyle` limited to
-  Regular/Medium/Bold; resolver falls back Space Grotesk → Inter → Roboto if a font is missing.
-- **Not supported:** images, vector/SVG icons (use the `glyph` box as a placeholder), gradients,
-  layout constraints, nested component instances, "fill container"/grow sizing.
+### Resolved token values (current — re-read if tokens change)
+
+- Colors: `color/ink` `#000000`, `color/white` `#FFFFFF`, `color/paper` `#FFFDF5`,
+  `color/brand/yellow` `#FFD23F`, `color/brand/lime` `#9EFF3F`, `color/brand/cyan` `#3FC1FF`,
+  `color/border` = ink `#000000`, `color/text/onAccent` = ink `#000000`, `color/text/disabled` `#9A9A9A`.
+- Border width: thin `2`, regular `3`, thick `4` (px). Radius: none `0`, sm `4`, md `8`.
+- Shadow (all blur 0, spread 0, color ink): `sm` offset 2/2, `md` 4/4, `lg` 6/6.
+- Fonts: **Space Grotesk** (body + display), **Space Mono** (mono). Weight map: 500→`Medium`,
+  700→`Bold`. ⚠️ `font.weight.black` is **900** but Space Grotesk ships no Black — use `Bold` and flag it.
+- letterSpacing: `wide` 0.04em → Figma `{ value: 4, unit: 'PERCENT' }`; `tight` -0.02em → `-2%`.
+- Example — **Button (contained primary, Default)**: fill `color/brand/yellow`, border `3px` `color/border`,
+  radius `0`, padding `8/18`, shadow `hard.md` (4/4), label `color/text/onAccent` Space Grotesk **Bold**
+  letterSpacing `4%`, textTransform none. Hover → shadow `hard.lg` (6/6). Active → no shadow.
+  Focus → 3px cyan ring. Disabled → bg `#E6E6E6`, text/border `color/text/disabled`, no shadow.
+
+## Step 2 — Replicate with `use_figma` (the recipe)
+
+Call `use_figma` with `fileKey` + a `code` string (≤ 50 000 chars). `fileKey` comes from the Figma URL
+(`figma.com/design/:fileKey/...`) or `whoami`; the Banana file key is `U0bynIRHU9Y5rDljFuAGqF`.
+
+**Bind every paint to a variable (fixes "plain hex"):**
+```js
+const vars = await figma.variables.getLocalVariablesAsync();
+const byName = new Map(vars.map((v) => [v.name, v]));         // names use "/" groups
+const v = byName.get('color/brand/yellow');                   // must exist (Pull first)
+let fills = [{ type: 'SOLID', color: { r: 1, g: 0.82, b: 0.247 } }];
+fills[0] = figma.variables.setBoundVariableForPaint(fills[0], 'color', v); // returns a bound paint
+node.fills = fills;                                            // same pattern for node.strokes / text.fills
+```
+If `byName.get(...)` is undefined the variable wasn't pulled — stop and run plugin **Pull**, don't fall
+back to a literal color (that *is* the discrepancy).
+
+**Exact geometry (fixes size/spacing):** set explicit numbers, never defaults —
+`node.layoutMode = 'HORIZONTAL'|'VERTICAL'`; `paddingTop/Right/Bottom/Left`; `itemSpacing`;
+`primaryAxisAlignItems`/`counterAxisAlignItems`; `cornerRadius`; `strokeWeight`; `resize(w, h)`; and
+`layoutSizingHorizontal/Vertical = 'FIXED'|'HUG'` to match the component's fixed-vs-hug intent.
+
+**Hard neo-brutalist shadow (fixes blur/offset):**
+```js
+node.effects = [{ type: 'DROP_SHADOW', color: { r: 0, g: 0, b: 0, a: 1 },
+  offset: { x: 4, y: 4 }, radius: 0, spread: 0, blendMode: 'NORMAL', visible: true }];
+```
+`radius: 0` (no blur) and `spread: 0` are non-negotiable; offset comes from the `shadow.hard.*` token.
+Active-state variant = `node.effects = []`.
+
+**Typography (fixes wrong font/weight):** load the font **before** setting characters —
+```js
+await figma.loadFontAsync({ family: 'Space Grotesk', style: 'Bold' });
+text.fontName = { family: 'Space Grotesk', style: 'Bold' };
+text.fontSize = 16;
+text.letterSpacing = { value: 4, unit: 'PERCENT' };
+```
+Use `Space Mono` for mono labels. If a font isn't installed, `loadFontAsync` throws — fall back to Inter,
+whose styles are spelled **`"Semi Bold"` / `"Extra Bold"`** (with a space), and report the substitution.
+
+**Variants:** build one component per row of the table, then
+`figma.combineAsVariants(nodes, parentSet)`; name each `State=Hover` etc.
+
+**`use_figma` gotchas:** `getPluginData`/`setPluginData` are unsupported; don't assign `figma.currentPage`
+(use `await figma.setCurrentPageAsync(page)`); all variable/font/node lookups are the **async** variants;
+keep `code` under 50 000 chars (split a big component set across calls).
+
+## Step 3 — Verify by screenshot diff (close the loop)
+
+After writing, call `get_screenshot` on the built node (and `get_variable_defs` to confirm bindings,
+`get_design_context` for detail), render the same component in Storybook (Claude Preview MCP), and compare
+against the four classes: **geometry, shadow, typography, variable-binding**. Report drift and iterate the
+`use_figma` code until they match. This screenshot diff is the fidelity gate (the plugin equivalent is its
+"N bound / 0 plain" log).
+
+## Per-discrepancy quick-fix
+
+| Symptom | Fix | Read from |
+| --- | --- | --- |
+| Size / padding / radius off | set `resize`, `padding*`, `itemSpacing`, `cornerRadius`, `strokeWeight` to exact px | the `Mui<X>` override |
+| Shadow blurred / wrong offset | `effects` DROP_SHADOW, `radius:0`, `spread:0`, offset = token | `shadow.hard.*` |
+| Wrong font / weight | `loadFontAsync` then `fontName` Space Grotesk/Mono + style; set `fontSize`/`letterSpacing` | `font.*` tokens |
+| Fill/stroke/text plain hex | `setBoundVariableForPaint(paint,'color',byName.get(name))`; Pull if missing | `variables.json` names |
 
 ## Neo-brutalist quality bar (`docs/neo-brutalism.md`)
 
-- Square corners (`cornerRadius: 0`) **unless** a component deliberately differs (e.g. the pill Switch).
-- Thick solid borders via `border()` + `strokeWeight` (`border.width.regular` = 3px).
-- Hard offset shadows (`SH.*`), no blur. Hover = larger shadow; Active = shadow collapses (no shadow).
-- Bold display / mono type. Disabled = `opacity 0.5`.
-- Complete, consistent variant × state matrices (mirror the `button()` builder's `Variant × State`).
+Square corners (radius 0) **unless** a component deliberately differs (e.g. the pill Switch, radius 999).
+Thick solid `color/border`. Hard offset shadows, no blur. Hover = larger shadow; Active = shadow collapse.
+Bold display / mono type. Disabled = opacity 0.5 (or the override's explicit disabled colors). Reproduce
+the **complete** variant × state matrix — mirror the `button()` builder.
 
-## Pre-Build checklist
+## Secondary path — custom plugin spec discipline (condensed)
 
-- [ ] Builder added/edited and present in `BUILDERS`.
-- [ ] Every fill/stroke/textColor uses `c(...)`; names match `specs/variables.json`.
-- [ ] `pnpm --filter @banana/figma-plugin build` run (regenerates specs + bundle); `typecheck` + `lint` clean.
-- [ ] New tokens? Regenerate `variables.json` too, and re-run **Pull** in Figma.
-- [ ] Committed **and pushed** to `main`.
-- [ ] In Figma: Pull, then Build; log shows **0 plain** paints; screenshot matches the intended design.
+When editing the bulk-build plugin instead of `use_figma`:
+1. **Generate, never hand-edit JSON.** Add/edit a builder in `generate-component-specs.mjs`, register it
+   in `BUILDERS`, then `pnpm --filter @banana/figma-plugin build`. Hand edits to `specs/*.json` are
+   overwritten on the next build.
+2. **Bind every paint** via the `c('color/...')` helper so each `PaintRef` carries a `var` matching a name
+   from `generate-variables-spec.mjs`; an unmatched/missing `var` silently renders as plain hex.
+3. **Pull before Build**; confirm the log reports **0 plain** paints.
+4. **Push before you expect to see it** — the plugin fetches specs from GitHub `main`; an unpushed commit
+   builds the *old* component (the exact issue hit with the Switch).
+5. **DSL limits:** only COLOR paints bind (FLOAT/STRING/BOOLEAN stay raw numbers); one DROP_SHADOW, blur
+   forced to 0; fonts Space Grotesk/Mono (Inter→Roboto fallback); no images, vectors, gradients, nested
+   instances. When a limit blocks fidelity, switch to `use_figma`.
+
+## Pre-flight checklist
+
+- [ ] Read the coded `Mui<X>` override + resolved tokens; built the variant × state property table.
+- [ ] Plugin **Pull** has run so the `Banana` variables exist in the file.
+- [ ] `use_figma`: every fill/stroke/text color bound via `setBoundVariableForPaint` (no literal fallback).
+- [ ] Geometry, shadow (radius 0), and font (loaded before use) set to exact values.
+- [ ] `get_screenshot` vs Storybook: geometry / shadow / typography / binding all match.
+- [ ] (Secondary path only) generator rebuilt; specs committed **and pushed** to `main`.
