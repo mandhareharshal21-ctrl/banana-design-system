@@ -573,6 +573,145 @@ export function createNeoBrutalistTheme(options: ThemeOptions = {}): Theme {
             },
           },
         },
+
+        // --- Group 5: Pinterest essentials — Media ---
+        MuiImageListItemBar: {
+          styleOverrides: {
+            root: {
+              backgroundColor: color.ink,
+              borderTop: `${border.width.regular} solid ${color.border}`,
+            },
+            title: {
+              fontFamily: font.family.body,
+              fontWeight: font.weight.bold,
+              color: color.white,
+            },
+            subtitle: { fontFamily: font.family.mono, color: color.white },
+          },
+        },
+        MuiCardActionArea: {
+          styleOverrides: {
+            root: {
+              borderRadius: px(radius.none),
+              '&.Mui-focusVisible': focusRing,
+              '& .MuiCardActionArea-focusHighlight': { opacity: 0 },
+            },
+          },
+        },
+        MuiAvatarGroup: {
+          styleOverrides: {
+            avatar: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              backgroundColor: color.brand.purple,
+              color: color.text.onAccent,
+              fontWeight: font.weight.bold,
+              fontSize: font.size.sm,
+            },
+          },
+        },
+        MuiAutocomplete: {
+          styleOverrides: {
+            paper: {
+              borderRadius: px(radius.none),
+              border: `${border.width.thick} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+              backgroundColor: color.background.paper,
+            },
+            option: {
+              fontWeight: font.weight.bold,
+              '&:hover': { backgroundColor: color.background.default },
+              '&.Mui-focused': { backgroundColor: color.background.default },
+              '&[aria-selected="true"]': {
+                backgroundColor: color.brand.yellow,
+                color: color.text.onAccent,
+              },
+            },
+            tag: { borderRadius: px(radius.none) },
+          },
+        },
+
+        // --- Group 5: Pinterest essentials — App Shell ---
+        MuiAppBar: {
+          defaultProps: { elevation: 0, color: 'default' },
+          styleOverrides: {
+            root: {
+              backgroundColor: color.background.paper,
+              backgroundImage: 'none',
+              color: color.text.primary,
+              borderBottom: `${border.width.thick} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+            },
+          },
+        },
+        MuiDrawer: {
+          styleOverrides: {
+            paper: {
+              borderRadius: px(radius.none),
+              backgroundColor: color.background.paper,
+              backgroundImage: 'none',
+              boxShadow: shadow.hard.lg,
+            },
+            paperAnchorLeft: { borderRight: `${border.width.thick} solid ${color.border}` },
+            paperAnchorRight: { borderLeft: `${border.width.thick} solid ${color.border}` },
+            paperAnchorTop: { borderBottom: `${border.width.thick} solid ${color.border}` },
+            paperAnchorBottom: { borderTop: `${border.width.thick} solid ${color.border}` },
+          },
+        },
+        MuiBottomNavigation: {
+          styleOverrides: {
+            root: {
+              backgroundColor: color.background.paper,
+              borderTop: `${border.width.thick} solid ${color.border}`,
+              height: 64,
+            },
+          },
+        },
+        MuiBottomNavigationAction: {
+          styleOverrides: {
+            root: {
+              color: color.text.secondary,
+              '&.Mui-selected': { color: color.text.primary },
+              '&.Mui-focusVisible': focusRing,
+            },
+            label: {
+              fontFamily: font.family.mono,
+              fontWeight: font.weight.bold,
+            },
+          },
+        },
+        MuiSpeedDialAction: {
+          styleOverrides: {
+            fab: {
+              borderRadius: px(radius.none),
+              border: `${border.width.regular} solid ${color.border}`,
+              boxShadow: shadow.hard.sm,
+              backgroundColor: color.background.paper,
+              color: color.text.primary,
+              '&:hover': { backgroundColor: color.background.paper, boxShadow: shadow.hard.md },
+            },
+            staticTooltipLabel: {
+              borderRadius: px(radius.none),
+              border: `${border.width.thin} solid ${color.border}`,
+              backgroundColor: color.ink,
+              color: color.white,
+              fontFamily: font.family.mono,
+              fontWeight: font.weight.bold,
+              whiteSpace: 'nowrap',
+            },
+          },
+        },
+        MuiPopover: {
+          styleOverrides: {
+            paper: {
+              borderRadius: px(radius.none),
+              border: `${border.width.thick} solid ${color.border}`,
+              boxShadow: shadow.hard.md,
+              backgroundColor: color.background.paper,
+              backgroundImage: 'none',
+            },
+          },
+        },
       },
     },
     options,

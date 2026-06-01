@@ -147,3 +147,53 @@ export type {
   TableProps,
   TableCellProps,
 } from '@mui/material';
+
+// Group 5 — Pinterest essentials (Media)
+export {
+  ImageList,
+  ImageListItem,
+  ImageListItemBar,
+  CardMedia,
+  CardActionArea,
+  AvatarGroup,
+  Autocomplete,
+} from '@mui/material';
+
+export type {
+  ImageListProps,
+  ImageListItemProps,
+  ImageListItemBarProps,
+  CardMediaProps,
+  CardActionAreaProps,
+  AvatarGroupProps,
+  AutocompleteProps,
+} from '@mui/material';
+
+// Group 5 — Pinterest essentials (App Shell)
+export {
+  AppBar,
+  Toolbar,
+  Drawer,
+  SwipeableDrawer,
+  BottomNavigation,
+  BottomNavigationAction,
+  SpeedDial,
+  SpeedDialAction,
+  SpeedDialIcon,
+  Popover,
+  Popper,
+} from '@mui/material';
+
+export type {
+  AppBarProps,
+  ToolbarProps,
+  DrawerProps,
+  SwipeableDrawerProps,
+  BottomNavigationProps,
+  BottomNavigationActionProps,
+  SpeedDialProps,
+  SpeedDialActionProps,
+  SpeedDialIconProps,
+  PopoverProps,
+  PopperProps,
+} from '@mui/material';
