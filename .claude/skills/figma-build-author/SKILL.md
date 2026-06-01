@@ -1,6 +1,6 @@
 ---
 name: figma-build-author
-description: Precision discipline for replicating Banana design-system components in Figma so the canvas matches the code exactly. Use when building/replicating/correcting a Banana component in Figma via the Figma MCP (`use_figma`), when fixing geometry/spacing, shadow, typography, or variable-binding discrepancies between the repo and a Figma file, or when authoring/editing the custom plugin's build-specs (packages/figma-plugin/scripts/generate-component-specs.mjs, specs/components/*.json) or the variables spec. Apply before writing any Figma or any spec the plugin will materialize.
+description: Precision discipline for replicating Banana design-system components in Figma so the canvas matches the code exactly. Use when building/replicating/correcting a Banana component in Figma via the Figma MCP (`use_figma`), when fixing geometry/spacing, shadow, typography, or variable-binding discrepancies between the repo and a Figma file, or when authoring/editing the custom plugin's build-specs (packages/figma-plugin/scripts/generate-component-specs.mjs, specs/components/*.json) or the variables spec, or when reconciling/aligning Figma variable changes back into the DTCG source tokens (packages/tokens). Apply before writing any Figma or any spec the plugin will materialize.
 ---
 
 # Figma build-author
@@ -145,6 +145,19 @@ When editing the bulk-build plugin instead of `use_figma`:
 5. **DSL limits:** only COLOR paints bind (FLOAT/STRING/BOOLEAN stay raw numbers); one DROP_SHADOW, blur
    forced to 0; fonts Space Grotesk/Mono (Inter→Roboto fallback); no images, vectors, gradients, nested
    instances. When a limit blocks fidelity, switch to `use_figma`.
+
+## Reconcile (Figma → tokens) — on-request only
+
+When the user asks to fold Figma **variable** changes back into code (e.g. *"align tokens with Figma"*) —
+this is **not** automatic, and plugin Push does **not** do it (Push only snapshots `figma-state.json`).
+Read the changed variables (`specs/figma-state.json`, or `get_variable_defs` / `use_figma`
+`getLocalVariablesAsync`), map each name `/`→`.` to a DTCG token path in
+`packages/tokens/src/tokens/*.json`, and edit the **source** token — **alias-aware**: if the mapped token
+is an alias (`color.border = "{color.ink}"`), don't overwrite it with a literal; edit the alias *base*
+(`color.ink`) for a base change, or break just that one token's alias for an intentional divergence.
+Re-attach stripped units (`"3px"`, not `3`); shadows aren't variables. Then `pnpm tokens:build` → `pnpm
+build` → verify in Storybook. Full procedure + worked example: `docs/figma-workflow.md` →
+*Figma → tokens reconcile (on-request)*.
 
 ## Pre-flight checklist
 

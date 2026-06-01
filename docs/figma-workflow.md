@@ -91,8 +91,44 @@ After a green connection test, each action updates the status banner with a succ
 1. Designer edits Variables/components in Figma.
 2. **Push State** writes `specs/figma-state.json` to the repo.
 3. Claude reads that JSON, diffs it against tokens/code, and reconciles changes back into
-   `packages/tokens` and `@banana/mui-neo`.
+   `packages/tokens` and `@banana/mui-neo` (see next section).
 4. Re-run token + plugin builds; cut a release via Changesets if tokens changed.
+
+## Figma → tokens reconcile (on-request)
+
+**Push only snapshots Figma** into `specs/figma-state.json`; it changes no code. To make a Figma
+**variable** edit actually affect the live component, the change has to land in the DTCG source tokens
+(`packages/tokens/src/tokens/*.json`) → `pnpm tokens:build` → theme → Storybook. This is a **deliberate,
+on-request, Claude-driven** step — *not* an automatic write-back. The round-trip is lossy
+(`build.mjs` resolves aliases to flat hex, `generate-variables-spec.mjs` strips units and skips shadows,
+and several tokens share a value), so a blind auto-overwrite would corrupt the source of truth. Trigger it
+explicitly, e.g. *"align tokens with Figma"*.
+
+Procedure:
+
+1. **Source the changes.** Read `specs/figma-state.json` (each entry: variable `name` + resolved
+   `valuesByMode`), or read live values via MCP (`get_variable_defs` on a node, or `use_figma`
+   `getLocalVariablesAsync`).
+2. **Map name → token path.** Replace `/` with `.` (`color/brand/yellow` → `color.brand.yellow`). The
+   top-level key picks the file: `color.json`, `border.json` (border + radius), `typography.json`,
+   `space.json`. **Shadows** live in `shadow.json` and are **not** Figma variables.
+3. **Diff vs resolved tokens.** Compare each Figma value to the built value from `@banana/tokens`; act
+   only on changed values.
+4. **Alias-aware write — the critical rule.** If the mapped token is an alias (e.g.
+   `color.border = "{color.ink}"`), do **not** overwrite the alias with a literal. Decide intent:
+   - a changed **base** value → edit the base token (`color.ink`) so every alias follows;
+   - an intentional **divergence** (one of several same-valued variables changed) → break *that one*
+     token's alias into a literal (or a different alias), leaving the rest pointing at the base.
+   Re-attach the unit Figma stripped (`border.width.regular` stays `"3px"`, not `3`). Shadows/geometry are
+   not variables — reconcile by hand from the component if that's what changed.
+5. **Rebuild + verify.** `pnpm tokens:build` → `pnpm build`; open the affected component in Storybook and
+   confirm it reflects the change; `pnpm test` / `typecheck` / `lint` clean.
+6. **Commit** with a clear message; push only when the user authorizes it.
+
+*Worked example.* Figma `color/brand/yellow` changed `#FFD23F` → `#FFC400`. It is a base token (not an
+alias), so edit only `color.brand.yellow.$value` in `color.json`. `color.border`/`color.text.onAccent`
+(aliases of `color.ink`) are untouched. `pnpm tokens:build` regenerates `generated.ts` + `tokens.css`;
+the Button's contained fill updates in Storybook; nothing else moves.
 
 ## Authoring a new component (or editing one)
 
