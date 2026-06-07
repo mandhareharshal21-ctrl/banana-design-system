@@ -23,13 +23,13 @@
   },
   "devDependencies": {
     "@storybook/addon-essentials": "^8.4.7",
-    "@storybook/react": "^8.4.7",
-    "@storybook/react-vite": "^8.4.7",
+    "@storybook/react": "^10.4.2",
+    "@storybook/react-vite": "^10.4.2",
     "@types/node": "^22.10.0",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "@vitejs/plugin-react": "^4.3.4",
-    "storybook": "^8.4.7",
+    "storybook": "^10.4.2",
     "typescript": "^5.7.2",
     "vite": "^5.4.11"
   }
