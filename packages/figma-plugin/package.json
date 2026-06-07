@@ -12,8 +12,8 @@
     "@banana/tokens": "workspace:*"
   },
   "devDependencies": {
-    "@figma/plugin-typings": "^1.109.0",
-    "esbuild": "^0.27.0",
-    "typescript": "^5.7.2"
+    "@figma/plugin-typings": "^1.128.0",
+    "esbuild": "^0.28.0",
+    "typescript": "^6.0.3"
   }
 }
